@@ -37,7 +37,7 @@ function Navbar() {
       <nav className=" shadow-lg px-4 py-2">
         <div className="flex items-center justify-between container mx-auto">
           <div className="font-semibold text-xl">
-            Cilli<span className="text-blue-500">Blog</span>
+            Swar<span className="text-blue-500">Lekhan</span>
           </div>
           {/* Desktop */}
           <div className=" mx-6">
@@ -50,12 +50,6 @@ function Navbar() {
               </Link>
               <Link to="/creators" className="hover:text-blue-500">
                 CREATORS
-              </Link>
-              <Link to="/about" className="hover:text-blue-500">
-                ABOUT
-              </Link>
-              <Link to="/contact" className="hover:text-blue-500">
-                CONTACT
               </Link>
             </ul>
             <div className="md:hidden" onClick={() => setShow(!show)}>
@@ -130,28 +124,7 @@ function Navbar() {
               >
                 CREATORS
               </Link>
-              <Link
-                to="/about"
-                onClick={() => setShow(!show)}
-                smooth="true"
-                duration={500}
-                offset={-70}
-                activeClass="active"
-                className="hover:text-blue-500"
-              >
-                ABOUT
-              </Link>
-              <Link
-                to="/contact"
-                onClick={() => setShow(!show)}
-                smooth="true"
-                duration={500}
-                offset={-70}
-                activeClass="active"
-                className="hover:text-blue-500"
-              >
-                CONTACT
-              </Link>
+              
             </ul>
           </div>
         )}
