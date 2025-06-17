@@ -79,7 +79,7 @@ function Register() {
         <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8">
           <form onSubmit={handleRegister}>
             <div className="font-semibold text-xl items-center text-center">
-              Cilli<span className="text-blue-500">Blog</span>
+              Swar<span className="text-blue-500">Lekhan</span>
             </div>
             <h1 className="text-xl font-semibold mb-6">Register</h1>
             <select

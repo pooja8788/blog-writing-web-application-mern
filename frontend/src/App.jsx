@@ -8,11 +8,14 @@ import Login from "../src/pages/Login";
 import Register from "../src/pages/Register";
 import Creators from "./pages/Creators";
 import Dashboard from "../src/pages/Dashboard";
+import Contact from "../src/pages/Contact";
+import Favorites from "../src/pages/Favorites";
 import { useAuth } from "./context/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import UpdateBlog from "./dashboard/UpdateBlog.jsx";
 import Detail from "./pages/Detail.jsx";
 import NotFound from "./pages/NotFound.jsx";
+
 function App() {
   const location = useLocation();
   const hideNavbarFooter = ["/dashboard", "/login", "/register"].includes(
@@ -37,6 +40,8 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/contact" element={<Contact/>} />
+        <Route exact path="/favorites" element={<Favorites/>} />
         
 
         {/* Single page route */}

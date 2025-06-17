@@ -1,4 +1,21 @@
 import mongoose from "mongoose";
+
+const commentSchema = new mongoose.Schema({
+  user: {
+    type: String, // or ObjectId if using users
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+
 const blogSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -29,6 +46,15 @@ const blogSchema = new mongoose.Schema({
   },
   adminPhoto: {
     type: String,
+  },
+  views: {
+    type: Number,
+    default: 0,
+  },
+  comments: [commentSchema],
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   createdBy: {
     type: mongoose.Schema.ObjectId,

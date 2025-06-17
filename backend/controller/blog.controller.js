@@ -1,6 +1,50 @@
 import mongoose, { mongo } from "mongoose";
 import { Blog } from "../models/blog.model.js";
 import { v2 as cloudinary } from "cloudinary";
+
+
+// Post Comments
+export const addComment = async (req, res) => {
+  const { id } = req.params;
+  const { user, text } = req.body;
+
+  if (!user || !text) {
+    return res.status(400).json({ message: "User and text are required." });
+  }
+
+  try {
+    const blog = await Blog.findById(id);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    blog.comments.push({ user, text });
+    await blog.save();
+
+    res.status(201).json({ message: "Comment added successfully", comments: blog.comments });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+//Get comments
+export const getComments = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const blog = await Blog.findById(id).populate("comments");
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.status(200).json(blog.comments);
+  } catch (error) {
+    console.error("Fetch comments error:", error.message);
+    res.status(500).json({ message: "Error fetching comments" });
+  }
+};
+
+
+//Create blog
 export const createBlog = async (req, res) => {
   try {
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -53,6 +97,7 @@ export const createBlog = async (req, res) => {
   }
 };
 
+//delete blog
 export const deleteBlog = async (req, res) => {
   const { id } = req.params;
   const blog = await Blog.findById(id);
@@ -80,6 +125,7 @@ export const getSingleBlogs = async (req, res) => {
   res.status(200).json(blog);
 };
 
+//get my blog
 export const getMyBlogs = async (req, res) => {
   const createdBy = req.user._id;
   const myBlogs = await Blog.find({ createdBy });

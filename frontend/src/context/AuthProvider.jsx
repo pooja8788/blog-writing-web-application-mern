@@ -1,21 +1,19 @@
 import axios from "axios";
-// eslint-disable-next-line no-unused-vars
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
-  const [blogs, setBlogs] = useState();
+  const [blogs, setBlogs] = useState([]);
   const [profile, setProfile] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // token should be let type variable because its value will change in every login. (in backend also)
-        let token = localStorage.getItem("jwt"); // Retrieve the token directly from the localStorage (Go to login.jsx)
-        console.log(token);
+        let token = localStorage.getItem("jwt");
         if (token) {
           const { data } = await axios.get(
             "http://localhost:4001/api/users/my-profile",
@@ -26,7 +24,6 @@ export const AuthProvider = ({ children }) => {
               },
             }
           );
-          console.log(data.user);
           setProfile(data.user);
           setIsAuthenticated(true);
         }
@@ -41,7 +38,6 @@ export const AuthProvider = ({ children }) => {
           "http://localhost:4001/api/blogs/all-blogs",
           { withCredentials: true }
         );
-        console.log(data);
         setBlogs(data);
       } catch (error) {
         console.log(error);
@@ -52,6 +48,22 @@ export const AuthProvider = ({ children }) => {
     fetchProfile();
   }, []);
 
+  // FAVORITES LOGIC
+  const toggleFavorite = (blog) => {
+    setFavorites((prev) => {
+      const exists = prev.find((b) => b._id === blog._id);
+      if (exists) {
+        return prev.filter((b) => b._id !== blog._id);
+      } else {
+        return [...prev, blog];
+      }
+    });
+  };
+
+  const isFavorite = (id) => {
+    return favorites.some((b) => b._id === id);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -60,6 +72,9 @@ export const AuthProvider = ({ children }) => {
         setProfile,
         isAuthenticated,
         setIsAuthenticated,
+        favorites,
+        toggleFavorite,
+        isFavorite,
       }}
     >
       {children}

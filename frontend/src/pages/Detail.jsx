@@ -6,29 +6,64 @@ import { useParams } from "react-router-dom";
 
 function Detail() {
   const { id } = useParams();
-  const [blogs, setblogs] = useState({});
-  console.log(blogs);
+  const [blogs, setBlogs] = useState({});
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [userName, setUserName] = useState("Guest");
+
+  // Fetch blog detail
   useEffect(() => {
-    const fetchblogs = async () => {
+    const fetchBlogs = async () => {
       try {
         const { data } = await axios.get(
           `http://localhost:4001/api/blogs/single-blog/${id}`,
-
           {
             withCredentials: true,
             headers: {
-                "Content-Type": "application/json",
+              "Content-Type": "application/json",
             },
           }
         );
-        console.log(data);
-        setblogs(data);
+        setBlogs(data);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchblogs();
+    fetchBlogs();
   }, [id]);
+
+  // Fetch comments
+  const fetchComments = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:4001/api/blogs/${id}/comments`
+      );
+      setComments(data);
+    } catch (err) {
+      console.error("Failed to load comments", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, [id]);
+
+  // Add comment
+  const handleAddComment = async () => {
+    if (!comment.trim()) return toast.error("Comment cannot be empty");
+    try {
+      await axios.post(`http://localhost:4001/api/blogs/${id}/comment`, {
+        user: userName,
+        text: comment,
+      });
+      toast.success("Comment added");
+      setComment("");
+      fetchComments();
+    } catch (err) {
+      toast.error("Failed to add comment");
+    }
+  };
+
   return (
     <div>
       <div>
@@ -59,6 +94,40 @@ function Detail() {
                 <p className="text-lg mb-6">{blogs?.about}</p>
               </div>
             </div>
+
+            {/* -------- COMMENT SECTION -------- */}
+            <div className="mt-10 border-t pt-6">
+              <h2 className="text-2xl font-semibold mb-4">Comments</h2>
+
+              <textarea
+                className="w-full p-2 border rounded mb-2"
+                placeholder="Write a comment..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={handleAddComment}
+              >
+                Post Comment
+              </button>
+
+              <div className="mt-6 space-y-4">
+                {comments.length === 0 ? (
+                  <p className="text-gray-500">No comments yet.</p>
+                ) : (
+                  comments.map((c, index) => (
+                    <div key={index} className="bg-gray-100 p-3 rounded">
+                      <p className="text-gray-800">{c.text}</p>
+                      <small className="text-gray-600">
+                        – {c.user}, {new Date(c.date).toLocaleString()}
+                      </small>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+            {/* -------- END COMMENT SECTION -------- */}
           </section>
         )}
       </div>
