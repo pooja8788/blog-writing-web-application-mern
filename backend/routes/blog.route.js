@@ -8,6 +8,8 @@ import {
   updateBlog,
   addComment,
   getComments,
+  searchBlogs,
+
 } from "../controller/blog.controller.js";
 import { isAdmin, isAuthenticated } from "../middleware/authUser.js";
 
@@ -18,6 +20,7 @@ router.post("/create", isAuthenticated, isAdmin("admin"), createBlog);
 router.delete("/delete/:id", isAuthenticated, isAdmin("admin"), deleteBlog);
 router.post("/:id/comment",  addComment);
 router.get("/:id/comments",  getComments);
+router.get("/search", searchBlogs);
 router.get("/all-blogs", getAllBlogs);
 router.get("/single-blog/:id", isAuthenticated, getSingleBlogs);
 router.get("/my-blog", isAuthenticated, isAdmin("admin"), getMyBlogs);

@@ -10,6 +10,12 @@ function Detail() {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userName, setUserName] = useState("Guest");
+  useEffect(() => {
+  if (blogs?.adminName) {
+    setUserName(blogs.adminName);
+  }
+}, [blogs]);
+
 
   // Fetch blog detail
   useEffect(() => {

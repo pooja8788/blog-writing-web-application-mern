@@ -28,7 +28,6 @@ function CreateBlog() {
     formData.append("title", title);
     formData.append("category", category);
     formData.append("about", about);
-
     formData.append("blogImage", blogImage);
     try {
       const { data } = await axios.post(

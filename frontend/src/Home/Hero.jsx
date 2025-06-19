@@ -64,10 +64,10 @@ function Hero() {
   const { blogs, toggleFavorite, isFavorite } = useAuth();
 
   return (
-    <div className="container mx-auto my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-6">
+    <div className="container mx-auto my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
       {blogs && blogs.length > 0 ? (
         blogs.slice(0, 4).map((element) => {
-          const favorite = isFavorite(element._id);
+          const isFav = isFavorite(element._id);
 
           return (
             <div
@@ -77,12 +77,12 @@ function Hero() {
               <Link to={`/blog/${element._id}`}>
                 <div className="group relative">
                   <img
-                    src={element.blogImage?.url}
+                    src={element.blogImage?.url || "/placeholder.jpg"}
                     alt={element.title}
                     className="w-full h-56 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-75 group-hover:opacity-100 transition duration-300"></div>
-                  <h1 className="absolute bottom-4 left-4 text-white text-xl font-bold group-hover:text-yellow-500 transition-colors duration-300">
+                  <h1 className="absolute bottom-4 left-4 text-white text-xl font-bold group-hover:text-yellow-400 transition-colors duration-300">
                     {element.title}
                   </h1>
                 </div>
@@ -91,7 +91,7 @@ function Hero() {
               <div className="p-6 flex items-center justify-between">
                 <div className="flex items-center">
                   <img
-                    src={element.adminPhoto}
+                    src={element.adminPhoto || "/user.png"}
                     alt={element.adminName}
                     className="w-12 h-12 rounded-full border-2 border-yellow-400"
                   />
@@ -104,18 +104,20 @@ function Hero() {
                 </div>
 
                 <button
-                  className="text-xl ml-2 hover:scale-125 transition-transform"
-                  onClick={() => toggleFavorite(element)}
-                  title={favorite ? "Remove from Favorites" : "Add to Favorites"}
+                  className={`text-2xl ml-2 transition-transform duration-200 hover:scale-125 ${
+                    isFav ? "text-red-500" : "text-gray-400"
+                  }`}
+                  onClick={() => toggleFavorite(element._id)}
+                  title={isFav ? "Remove from Favorites" : "Add to Favorites"}
                 >
-                  {favorite ? "❤" : "🤍"}
+                  {isFav ? "❤" : "🤍"}
                 </button>
               </div>
             </div>
           );
         })
       ) : (
-        <div className="flex h-64 items-center justify-center text-gray-500">
+        <div className="col-span-full flex justify-center items-center h-64 text-xl font-medium text-gray-600">
           Loading...
         </div>
       )}
@@ -124,6 +126,3 @@ function Hero() {
 }
 
 export default Hero;
-
-
-

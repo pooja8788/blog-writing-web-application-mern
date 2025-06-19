@@ -2,7 +2,6 @@ import mongoose, { mongo } from "mongoose";
 import { Blog } from "../models/blog.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
-
 // Post Comments
 export const addComment = async (req, res) => {
   const { id } = req.params;
@@ -19,7 +18,9 @@ export const addComment = async (req, res) => {
     blog.comments.push({ user, text });
     await blog.save();
 
-    res.status(201).json({ message: "Comment added successfully", comments: blog.comments });
+    res
+      .status(201)
+      .json({ message: "Comment added successfully", comments: blog.comments });
   } catch (error) {
     res.status(500).json({ message: "Internal server error", error });
   }
@@ -42,7 +43,6 @@ export const getComments = async (req, res) => {
     res.status(500).json({ message: "Error fetching comments" });
   }
 };
-
 
 //Create blog
 export const createBlog = async (req, res) => {
@@ -143,3 +143,32 @@ export const updateBlog = async (req, res) => {
   }
   res.status(200).json(updatedBlog);
 };
+
+//Search
+export const searchBlogs = async (req, res) => {
+  const query = req.query.q;
+  console.log("Search query:", query);
+
+  if (!query) {
+    return res.status(400).json({ message: "Search query is required" });
+  }
+
+  try {
+    const blogs = await Blog.find({
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { about: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+    })
+      .select("title about category adminName adminPhoto blogImage createdAt") // Only include necessary fields
+      .sort({ createdAt: -1 }); // Most recent first
+
+    res.status(200).json(blogs);
+  } catch (error) {
+    console.error("Search error:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
