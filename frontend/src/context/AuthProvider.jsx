@@ -90,6 +90,8 @@
 
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { BACKEND_URL } from "../utils";
+
 
 export const AuthContext = createContext();
 
@@ -100,11 +102,11 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [favorites, setFavorites] = useState([]);
 
-  // ✅ Fetch user's favorite blogs
+  // Fetch user's favorite blogs
   const fetchFavorites = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:4001/api/users/favorites",
+        `${BACKEND_URL}/api/users/favorites`,
         { withCredentials: true }
       );
       setFavorites(data.favorites);
@@ -113,14 +115,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Fetch profile and blogs on mount
+  //  Fetch profile and blogs on mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("jwt");
         if (token) {
           const { data } = await axios.get(
-            "http://localhost:4001/api/users/my-profile",
+            `${BACKEND_URL}/api/users/my-profile`,
             {
               withCredentials: true,
               headers: {
@@ -140,7 +142,7 @@ export const AuthProvider = ({ children }) => {
     const fetchBlogs = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4001/api/blogs/all-blogs",
+          `${BACKEND_URL}/api/blogs/all-blogs`,
           { withCredentials: true }
         );
         setBlogs(data);
@@ -153,11 +155,11 @@ export const AuthProvider = ({ children }) => {
     fetchProfile();
   }, []);
 
-  // ✅ Toggle favorite status of a blog
+  // Toggle favorite status of a blog
   const toggleFavorite = async (blogId) => {
     try {
       await axios.post(
-        `http://localhost:4001/api/users/toggle-favorite/${blogId}`,
+        `${BACKEND_URL}/api/users/toggle-favorite/${blogId}`,
         {},
         { withCredentials: true }
       );
@@ -169,7 +171,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Check if a blog is in favorites
+  //  Check if a blog is in favorites
   const isFavorite = (id) => {
     return favorites.some((b) => b._id === id);
   };

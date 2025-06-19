@@ -3,6 +3,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import { BACKEND_URL } from "../utils";
+
 
 function Detail() {
   const { id } = useParams();
@@ -22,7 +24,7 @@ function Detail() {
     const fetchBlogs = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:4001/api/blogs/single-blog/${id}`,
+          `${BACKEND_URL}/api/blogs/single-blog/${id}`,
           {
             withCredentials: true,
             headers: {
@@ -42,7 +44,7 @@ function Detail() {
   const fetchComments = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4001/api/blogs/${id}/comments`
+        `${BACKEND_URL}/api/blogs/${id}/comments`
       );
       setComments(data);
     } catch (err) {
@@ -58,7 +60,7 @@ function Detail() {
   const handleAddComment = async () => {
     if (!comment.trim()) return toast.error("Comment cannot be empty");
     try {
-      await axios.post(`http://localhost:4001/api/blogs/${id}/comment`, {
+      await axios.post(`${BACKEND_URL}/api/blogs/${id}/comment`, {
         user: userName,
         text: comment,
       });
@@ -101,7 +103,6 @@ function Detail() {
               </div>
             </div>
 
-            {/* -------- COMMENT SECTION -------- */}
             <div className="mt-10 border-t pt-6">
               <h2 className="text-2xl font-semibold mb-4">Comments</h2>
 
@@ -133,7 +134,6 @@ function Detail() {
                 )}
               </div>
             </div>
-            {/* -------- END COMMENT SECTION -------- */}
           </section>
         )}
       </div>

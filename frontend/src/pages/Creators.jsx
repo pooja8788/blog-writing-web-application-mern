@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BACKEND_URL } from "../utils";
 
 function Creators() {
   const [creators, setCreators] = useState([]);
@@ -9,7 +10,7 @@ function Creators() {
     const fetchCreators = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4001/api/users/admins",
+          `${BACKEND_URL}/api/users/admins`,
           {
             withCredentials: true,
           }

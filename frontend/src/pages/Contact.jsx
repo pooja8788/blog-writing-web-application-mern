@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 function Contact() {
+  
   const {
     register,
     handleSubmit,

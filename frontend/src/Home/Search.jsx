@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../utils";
+
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -15,7 +17,7 @@ const Search = () => {
 
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:4001/api/blogs/search?q=${query}`);
+      const res = await axios.get(`${BACKEND_URL}/api/blogs/search?q=${query}`);
       setResults(res.data);
       setSearchActive(true);
     } catch (error) {
