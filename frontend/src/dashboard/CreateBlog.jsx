@@ -29,7 +29,12 @@ function CreateBlog() {
     formData.append("title", title);
     formData.append("category", category);
     formData.append("about", about);
+    if (blogImage instanceof File) {
     formData.append("blogImage", blogImage);
+  } else {
+    toast.error("Invalid image file");
+    return;
+  }
     try {
       const { data } = await axios.post(
         `${BACKEND_URL}/api/blogs/create`,
@@ -42,7 +47,7 @@ function CreateBlog() {
         }
       );
       console.log(data);
-      toast.success(data.message || "User registered successfully");
+      toast.success(data.message || "Blog created successfully");
       setTitle("");
       setCategory("");
       setAbout("");
@@ -50,7 +55,7 @@ function CreateBlog() {
       setBlogImagePreview("");
     } catch (error) {
       console.log(error);
-      toast.error(error.message || "Please fill the required fields");
+      toast.error(error.message || "Something went wrong on blog creation");
     }
   };
   return (

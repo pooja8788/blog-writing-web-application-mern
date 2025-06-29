@@ -6,7 +6,6 @@ import { v2 as cloudinary } from "cloudinary";
 export const addComment = async (req, res) => {
   const { id } = req.params;
   const { user, text } = req.body;
-
   if (!user || !text) {
     return res.status(400).json({ message: "User and text are required." });
   }
