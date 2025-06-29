@@ -81,7 +81,7 @@ export const createBlog = async (req, res) => {
       createdBy,
       blogImage: {
         public_id: cloudinaryResponse.public_id,
-        url: cloudinaryResponse.url,
+        url: cloudinaryResponse.secure_url,
       },
     };
     const blog = await Blog.create(blogData);
@@ -133,18 +133,6 @@ export const getMyBlogs = async (req, res) => {
   res.status(200).json(myBlogs);
 };
 
-export const updateBlog = async (req, res) => {
-  const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid Blog id" });
-  }
-  const updatedBlog = await Blog.findByIdAndUpdate(id, req.body, { new: true });
-  if (!updatedBlog) {
-    return res.status(404).json({ message: "Blog not found" });
-  }
-  res.status(200).json(updatedBlog);
-};
-
 //Search
 export const searchBlogs = async (req, res) => {
   const query = req.query.q;
@@ -172,4 +160,68 @@ export const searchBlogs = async (req, res) => {
   }
 };
 
+// export const updateBlog = async (req, res) => {
+//   const { id } = req.params;
+//   if (!mongoose.Types.ObjectId.isValid(id)) {
+//     return res.status(400).json({ message: "Invalid Blog id" });
+//   }
+//   const updatedBlog = await Blog.findByIdAndUpdate(id, req.body, { new: true });
+//   if (!updatedBlog) {
+//     return res.status(404).json({ message: "Blog not found" });
+//   }
+//   res.status(200).json(updatedBlog);
+// };
 
+
+// Update blog
+
+export const updateBlog = async (req, res) => {
+  const { id } = req.params;
+
+  // Validate blog ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid Blog ID" });
+  }
+
+  try {
+    const { title, category, about } = req.body;
+    const updateFields = { title, category, about };
+
+    // If an image file is uploaded
+    if (req.files && req.files.blogImage) {
+      const blogImage = req.files.blogImage;
+      const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
+
+      if (!allowedFormats.includes(blogImage.mimetype)) {
+        return res.status(400).json({
+          message: "Invalid image format. Only JPG, PNG, WEBP allowed.",
+        });
+      }
+
+      // Upload new image to Cloudinary
+      const cloudinaryResponse = await cloudinary.uploader.upload(blogImage.tempFilePath);
+
+      updateFields.blogImage = {
+        public_id: cloudinaryResponse.public_id,
+        url: cloudinaryResponse.secure_url, 
+      };
+    }
+
+    // Update the blog with new fields
+    const updatedBlog = await Blog.findByIdAndUpdate(id, updateFields, {
+      new: true,
+    });
+
+    if (!updatedBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.status(200).json({
+      message: "Blog updated successfully",
+      blog: updatedBlog,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
