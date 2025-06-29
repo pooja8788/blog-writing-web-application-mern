@@ -35,7 +35,6 @@ function Trending() {
         <FaChevronLeft />
       </button>
 
-      {/* Scrollable Container with Hidden Scrollbar */}
       <div
         ref={scrollContainerRef}
         className="flex space-x-4 overflow-x-scroll scroll-smooth snap-x hide-scrollbar"

@@ -1,10 +1,8 @@
 import axios from "axios";
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
-
 
 function UpdateBlog() {
   const navigateTo = useNavigate();
@@ -14,18 +12,20 @@ function UpdateBlog() {
   const [category, setCategory] = useState("");
   const [about, setAbout] = useState("");
 
-  const [blogImage, setBlogImage] = useState("");
+  const [blogImage, setBlogImage] = useState(null); // file if new selected
   const [blogImagePreview, setBlogImagePreview] = useState("");
+  const [existingImageUrl, setExistingImageUrl] = useState(""); // saved Cloudinary URL
 
   const changePhotoHandler = (e) => {
-    console.log(e);
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setBlogImagePreview(reader.result);
-      setBlogImage(file);
-    };
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setBlogImagePreview(reader.result);
+        setBlogImage(file);
+      };
+    }
   };
 
   useEffect(() => {
@@ -33,7 +33,6 @@ function UpdateBlog() {
       try {
         const { data } = await axios.get(
           `${BACKEND_URL}/api/blogs/single-blog/${id}`,
-
           {
             withCredentials: true,
             headers: {
@@ -41,14 +40,13 @@ function UpdateBlog() {
             },
           }
         );
-        console.log(data);
         setTitle(data?.title);
         setCategory(data?.category);
         setAbout(data?.about);
-        setBlogImage(data?.blogImage.url);
+        setExistingImageUrl(data?.blogImage?.url); // saved Cloudinary URL
       } catch (error) {
         console.log(error);
-        toast.error("Please fill the required fields");
+        toast.error("Failed to fetch blog data");
       }
     };
     fetchBlog();
@@ -61,7 +59,10 @@ function UpdateBlog() {
     formData.append("category", category);
     formData.append("about", about);
 
-    formData.append("blogImage", blogImage);
+    if (blogImage) {
+      formData.append("blogImage", blogImage); // only append if new image selected
+    }
+
     try {
       const { data } = await axios.put(
         `${BACKEND_URL}/api/blogs/update/${id}`,
@@ -73,13 +74,12 @@ function UpdateBlog() {
           },
         }
       );
-      console.log(data);
       toast.success(data.message || "Blog updated successfully");
       navigateTo("/");
     } catch (error) {
       console.log(error);
       toast.error(
-        error.response.data.message || "Please fill the required fields"
+        error.response?.data?.message || "Please fill the required fields"
       );
     }
   };
@@ -105,6 +105,7 @@ function UpdateBlog() {
                 <option value="Business">Business</option>
               </select>
             </div>
+
             <input
               type="text"
               placeholder="BLOG MAIN TITLE"
@@ -112,14 +113,15 @@ function UpdateBlog() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
+
             <div className="mb-4">
               <label className="block mb-2 font-semibold">BLOG IMAGE</label>
               <img
                 src={
                   blogImagePreview
                     ? blogImagePreview
-                    : blogImage
-                    ? blogImage
+                    : existingImageUrl
+                    ? existingImageUrl
                     : "/imgPL.webp"
                 }
                 alt="Blog Main"
@@ -131,10 +133,11 @@ function UpdateBlog() {
                 onChange={changePhotoHandler}
               />
             </div>
+
             <textarea
               rows="6"
               className="w-full p-2 mb-4 border rounded-md"
-              placeholder="Something about your blog atleast 200 characters!"
+              placeholder="Something about your blog at least 200 characters!"
               value={about}
               onChange={(e) => setAbout(e.target.value)}
             />

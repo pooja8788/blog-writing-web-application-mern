@@ -86,6 +86,8 @@ export const createBlog = async (req, res) => {
       },
     };
     const blog = await Blog.create(blogData);
+    console.log(cloudinaryResponse);
+
 
     res.status(201).json({
       message: "Blog created successfully",
