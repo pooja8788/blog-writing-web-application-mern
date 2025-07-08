@@ -37,7 +37,7 @@ function Trending() {
 
       <div
         ref={scrollContainerRef}
-        className="flex space-x-4 overflow-x-scroll scroll-smooth snap-x hide-scrollbar"
+        className="flex space-x-4 overflow-x-hidden scroll-smooth snap-x hide-scrollbar"
       >
         {mostCommentedBlogs.length > 0 ? (
           mostCommentedBlogs.slice(0, 10).map((element) => (
