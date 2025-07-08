@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
 
-
 const Search = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -12,7 +11,6 @@ const Search = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!query.trim()) return;
 
     try {
@@ -112,6 +110,10 @@ const Search = () => {
                       boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                       transition: "transform 0.2s ease, box-shadow 0.2s ease",
                       cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      height: "100%",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "scale(1.02)";
@@ -123,12 +125,15 @@ const Search = () => {
                     }}
                   >
                     <img
-                      src={post.blogImage?.url}
+                      src={post.blogImage?.url || "/default.jpg"}
                       alt={post.title}
                       style={{
                         width: "100%",
-                        height: "250px",
+                        height: "200px",
                         objectFit: "cover",
+                        objectPosition: "center",
+                        borderBottom: "1px solid #eee",
+                        backgroundColor: "#f2f2f2",
                       }}
                       onError={(e) => {
                         e.target.src = "/default.jpg";
@@ -146,7 +151,14 @@ const Search = () => {
                       >
                         {post.category}
                       </p>
-                      <h2 style={{ fontSize: "1.25rem", marginBottom: "0.75rem" }}>
+                      <h2
+                        style={{
+                          fontSize: "1.25rem",
+                          marginBottom: "0.75rem",
+                          lineHeight: "1.4",
+                          color: "#222",
+                        }}
+                      >
                         {post.title}
                       </h2>
                       <div
@@ -157,7 +169,7 @@ const Search = () => {
                         }}
                       >
                         <img
-                          src={post.adminPhoto}
+                          src={post.adminPhoto || "/default-user.jpg"}
                           alt="User"
                           style={{
                             width: "40px",
@@ -169,7 +181,7 @@ const Search = () => {
                             e.target.src = "/default-user.jpg";
                           }}
                         />
-                        <p style={{ fontWeight: "500" }}>{post.adminName}</p>
+                        <p style={{ fontWeight: "500", color: "#333" }}>{post.adminName}</p>
                       </div>
                     </div>
                   </div>
