@@ -112,7 +112,7 @@
 
 
 // src/pages/Favorites.jsx
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -120,6 +120,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 function Favorites() {
   const { favorites } = useAuth();
   const scrollContainerRef = useRef(null);
+  const [isScrollable, setIsScrollable] = useState(false);
 
   const scroll = (direction) => {
     const { current } = scrollContainerRef;
@@ -132,6 +133,18 @@ function Favorites() {
     }
   };
 
+  useEffect(() => {
+    const checkScrollable = () => {
+      const el = scrollContainerRef.current;
+      if (el) {
+        setIsScrollable(el.scrollWidth > el.clientWidth);
+      }
+    };
+    checkScrollable();
+    window.addEventListener("resize", checkScrollable);
+    return () => window.removeEventListener("resize", checkScrollable);
+  }, [favorites]);
+
   return (
     <div className="container mx-auto my-10 p-6 relative">
       <h2 className="text-2xl font-bold mb-6 text-center">Favorite Blogs</h2>
@@ -141,12 +154,14 @@ function Favorites() {
       ) : (
         <>
           {/* Left Scroll Button */}
-          <button
-            onClick={() => scroll("left")}
-            className="absolute left-0 top-[55%] transform -translate-y-1/2 z-10 bg-white p-2 shadow-lg rounded-full hover:bg-gray-200"
-          >
-            <FaChevronLeft />
-          </button>
+          {isScrollable && (
+            <button
+              onClick={() => scroll("left")}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 z-50 bg-white p-2 shadow-lg rounded-full hover:bg-gray-200"
+            >
+              <FaChevronLeft />
+            </button>
+          )}
 
           {/* Scrollable Favorites Container */}
           <div
@@ -188,12 +203,14 @@ function Favorites() {
           </div>
 
           {/* Right Scroll Button */}
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-0 top-[55%] transform -translate-y-1/2 z-10 bg-white p-2 shadow-lg rounded-full hover:bg-gray-200"
-          >
-            <FaChevronRight />
-          </button>
+          {isScrollable && (
+            <button
+              onClick={() => scroll("right")}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50 bg-white p-2 shadow-lg rounded-full hover:bg-gray-200"
+            >
+              <FaChevronRight />
+            </button>
+          )}
         </>
       )}
     </div>
