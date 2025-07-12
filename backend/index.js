@@ -25,8 +25,6 @@ app.use(
   })
 );
 
-
-
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -35,12 +33,26 @@ app.use(
 );
 
 // DB Code
-try {
-  mongoose.connect(MONOGO_URL);
-  console.log("Conntected to MonogDB");
-} catch (error) {
-  console.log(error);
-}
+const connectToDB = async () => {
+  try {
+    await mongoose.connect(MONOG_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("MongoDB connection error:", error.message);
+  }
+};
+
+connectToDB();
+
+// try {
+//   mongoose.connect(MONOGO_URL);
+//   console.log("Conntected to MonogDB");
+// } catch (error) {
+//   console.log(error);
+// }
 
 // defining routes
 app.use("/api/users", userRoute);

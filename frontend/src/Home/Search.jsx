@@ -86,7 +86,6 @@ const Search = () => {
 
       {searchActive && (
         <div>
-          <h2 style={{ marginBottom: "1rem", textAlign: "center" }}>Search Results</h2>
           <div
             style={{
               display: "grid",
