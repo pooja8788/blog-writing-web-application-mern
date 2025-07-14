@@ -36,10 +36,6 @@ export const register = async (req, res) => {
     const cloudinaryResponse = await cloudinary.uploader.upload(
       photo.tempFilePath
     );
-    updateFields.blogImage = {
-        public_id: cloudinaryResponse.public_id,
-        url: cloudinaryResponse.secure_url, 
-    };
     if (!cloudinaryResponse || cloudinaryResponse.error) {
       console.log(cloudinaryResponse.error);
     }
@@ -152,6 +148,7 @@ export const toggleFavorite = async (req, res) => {
       // Add to favorites
       user.favorites.push(blogId);
     }
+
     await user.save();
     // Populate favorites with full blog objects
     await user.populate("favorites");
