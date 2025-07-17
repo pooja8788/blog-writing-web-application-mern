@@ -134,38 +134,3 @@ export const getAdmins = async (req, res) => {
 };
 
 
-export const toggleFavorite = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    const blogId = req.params.blogId;
-
-    const index = user.favorites.indexOf(blogId);
-
-    if (index > -1) {
-      // Remove from favorites
-      user.favorites.splice(index, 1);
-    } else {
-      // Add to favorites
-      user.favorites.push(blogId);
-    }
-
-    await user.save();
-    // Populate favorites with full blog objects
-    await user.populate("favorites");
-
-    res.status(200).json({ favorites: user.favorites });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error updating favorites" });
-  }
-};
-
-export const getFavorites = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).populate("favorites");
-    res.status(200).json({ favorites: user.favorites });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error fetching favorites" });
-  }
-};
