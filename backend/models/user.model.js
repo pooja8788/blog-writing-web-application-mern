@@ -44,12 +44,6 @@ const userSchema = new mongoose.Schema({
   token: {
     type: String,
   },
-  favorites: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Blog", 
-    },
-  ],
   createdAt: {
     type: Date,
     default: Date.now,

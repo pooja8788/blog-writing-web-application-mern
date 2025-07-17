@@ -226,3 +226,39 @@ export const updateBlog = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// Toggle Like/Unlike a blog post
+export const toggleLikeBlog = async (req, res) => {
+  try {
+    const userId = req.user.id; // From isAuthenticated middleware
+    const blogId = req.params.id;
+
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    // Check if user has already liked this blog
+    const alreadyLiked = blog.likes.includes(userId);
+
+    if (alreadyLiked) {
+      blog.likes.pull(userId); // Remove like
+    } else {
+      blog.likes.push(userId); // Add like
+    }
+
+    await blog.save();
+
+    res.status(200).json({
+      success: true,
+      message: alreadyLiked ? "Blog unliked" : "Blog liked",
+      totalLikes: blog.likes.length,
+    });
+  } catch (error) {
+    console.error("Toggle Like Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong while toggling like",
+    });
+  }
+};

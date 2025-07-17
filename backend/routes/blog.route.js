@@ -9,7 +9,7 @@ import {
   addComment,
   getComments,
   searchBlogs,
-
+  toggleLikeBlog,
 } from "../controller/blog.controller.js";
 import { isAdmin, isAuthenticated } from "../middleware/authUser.js";
 
@@ -25,5 +25,7 @@ router.get("/all-blogs", getAllBlogs);
 router.get("/single-blog/:id", isAuthenticated, getSingleBlogs);
 router.get("/my-blog", isAuthenticated, isAdmin("admin"), getMyBlogs);
 router.put("/update/:id", isAuthenticated, isAdmin("admin"), updateBlog);
+router.post("/blogs/:id/like", isAuthenticated, toggleLikeBlog);
+
 
 export default router;

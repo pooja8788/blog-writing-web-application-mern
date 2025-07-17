@@ -39,7 +39,7 @@ const blogSchema = new mongoose.Schema({
   about: {
     type: String,
     required: true,
-    minlength: [200, "Should caontain atleast 200 characters!"],
+    minlength: [200, "Should contain atleast 200 characters!"],
   },
   adminName: {
     type: String,
@@ -52,6 +52,12 @@ const blogSchema = new mongoose.Schema({
     default: 0,
   },
   comments: [commentSchema],
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // References the users who liked this blog
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

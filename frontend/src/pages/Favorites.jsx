@@ -54,22 +54,26 @@
 // export default Favorites;
 
 
-// src/pages/Favorites.jsx
 import { useAuth } from "../context/AuthProvider";
 import { Link } from "react-router-dom";
 
 function Favorites() {
-  const { favorites } = useAuth();
+  const { blogs, profile } = useAuth();
+
+  // Filter blogs where current user has liked
+  const likedBlogs = blogs.filter((blog) =>
+    blog.likes.includes(profile?._id)
+  );
 
   return (
     <div className="container mx-auto my-10 p-6">
-      <h2 className="text-2xl font-bold mb-6 text-center">Favorite Blogs</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Liked Blogs</h2>
 
-      {favorites.length === 0 ? (
-        <p className="text-center text-gray-500">No favorites added yet.</p>
+      {likedBlogs.length === 0 ? (
+        <p className="text-center text-gray-500">No liked blogs yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {favorites.map((element) => (
+          {likedBlogs.map((element) => (
             <Link
               to={`/blog/${element._id}`}
               key={element._id}
@@ -96,7 +100,7 @@ function Favorites() {
                   <p className="text-lg font-semibold text-gray-800">
                     {element.adminName}
                   </p>
-                  <p className="text-xs text-gray-400">Favorite</p>
+                  <p className="text-xs text-red-400">Liked</p>
                 </div>
               </div>
             </Link>
