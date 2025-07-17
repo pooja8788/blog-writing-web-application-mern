@@ -1,7 +1,7 @@
 // BlogCard.jsx
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
-import PropTypes from "prop-types"; // ✅ import it
+import PropTypes from "prop-types";
 
 const BlogCard = ({ blog }) => {
   const { toggleLike, isBlogLikedByUser } = useAuth();
