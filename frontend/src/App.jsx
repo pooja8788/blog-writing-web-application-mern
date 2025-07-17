@@ -42,8 +42,6 @@ function App() {
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/contact" element={<Contact/>} />
         <Route exact path="/favorites" element={<Favorites/>} />
-        
-
         {/* Single page route */}
         <Route exact path="/blog/:id" element={<Detail />} />
 

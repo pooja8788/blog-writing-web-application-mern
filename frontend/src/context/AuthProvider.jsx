@@ -244,18 +244,40 @@ export const AuthProvider = ({ children }) => {
     fetchBlogs();
   }, []);
 
-  const toggleLike = async (blogId) => {
-    try {
-      await axios.post(
-        `${BACKEND_URL}/api/blogs/${blogId}/like`,
-        {},
-        { withCredentials: true }
-      );
-      await fetchBlogs();
-    } catch (error) {
-      console.log("Error toggling like:", error);
+ const toggleLike = async (blogId) => {
+  try {
+    if (!profile) {
+      alert("Please log in to like blogs.");
+      return;
     }
-  };
+
+    // Optimistically update UI
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((blog) => {
+        if (blog._id === blogId) {
+          const isLiked = blog.likes.includes(profile._id);
+          return {
+            ...blog,
+            likes: isLiked
+              ? blog.likes.filter((id) => id !== profile._id)
+              : [...blog.likes, profile._id],
+          };
+        }
+        return blog;
+      })
+    );
+
+    // Make the backend request
+    await axios.post(
+      `${BACKEND_URL}/api/blogs/${blogId}/like`,
+      {},
+      { withCredentials: true }
+    );
+  } catch (error) {
+    console.log("Error toggling like:", error);
+  }
+};
+
 
   const isBlogLikedByUser = (blog) => {
     if (!profile) return false;
