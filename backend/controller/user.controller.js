@@ -64,7 +64,7 @@ export const register = async (req, res) => {
           email: newUser.email,
           role: newUser.role,
           education: newUser.education,
-          avatar: newUser.avatar,
+          avatar: newUser.photo,
           createdOn: newUser.createdOn,
         },
         token: token,
@@ -104,6 +104,7 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        avatar: newUser.photo,
       },
       token: token,
     });
@@ -124,8 +125,20 @@ export const logout = (req, res) => {
 };
 
 export const getMyProfile = async (req, res) => {
-  const user = await req.user;
-  res.status(200).json({ user });
+  const user = req.user;
+
+  res.status(200).json({
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      education: user.education,
+      role: user.role,
+      avatar: user.photo, 
+      createdAt: user.createdAt,
+    },
+  });
 };
 
 export const getAdmins = async (req, res) => {
@@ -169,3 +182,4 @@ export const getFavorites = async (req, res) => {
     res.status(500).json({ error: "Error fetching favorites" });
   }
 };
+
