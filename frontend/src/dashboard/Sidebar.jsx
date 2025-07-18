@@ -124,8 +124,6 @@ Sidebar.propTypes = {
 function Sidebar({ setComponent }) {
   const { profile, setIsAuthenticated } = useAuth();
   const navigateTo = useNavigate();
-
-  // This controls whether the sidebar is minimized or not
   const [minimized, setMinimized] = useState(false);
 
   const handleComponents = (value) => {
@@ -174,7 +172,8 @@ function Sidebar({ setComponent }) {
             <>
               <img
                 className="w-24 h-24 rounded-full mx-auto mb-2"
-                src={profile?.user?.photo?.url}
+                src={profile?.user?.avatar?.url?.replace("http://", "https://") ||
+  "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                 alt=""
               />
               <p className="text-lg font-semibold">{profile?.user?.name}</p>
