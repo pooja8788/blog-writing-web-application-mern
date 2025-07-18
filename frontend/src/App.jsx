@@ -15,6 +15,7 @@ import { Toaster } from "react-hot-toast";
 import UpdateBlog from "./dashboard/UpdateBlog.jsx";
 import Detail from "./pages/Detail.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   const location = useLocation();
@@ -42,16 +43,12 @@ function App() {
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/contact" element={<Contact/>} />
         <Route exact path="/favorites" element={<Favorites/>} />
-        {/* Single page route */}
         <Route exact path="/blog/:id" element={<Detail />} />
-
-        {/* Update page route */}
         <Route exact path="/blog/update/:id" element={<UpdateBlog />} />
-
-        {/* Universal route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
+      {!hideNavbarFooter && <Footer />}
     </div>
   );
 }
