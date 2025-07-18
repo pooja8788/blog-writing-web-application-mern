@@ -4,12 +4,8 @@ import { useAuth } from "../context/AuthProvider";
 function MyProfile() {
   const { profile } = useAuth();
 
-  // Use secure Cloudinary avatar or fallback
- // ✅ Fix here
 const avatar = profile?.user?.avatar?.url?.replace("http://", "https://") ||
                "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
-
 
   useEffect(() => {
   console.log("Profile Data:", profile);
