@@ -64,45 +64,37 @@ function Hero() {
   const { blogs } = useAuth();
   const scrollRef = useRef(null);
 
-  const scrollLeft = () => {
-    scrollRef.current.scrollBy({
-      left: -300,
-      behavior: "smooth",
-    });
-  };
-
-  const scrollRight = () => {
-    scrollRef.current.scrollBy({
-      left: 300,
-      behavior: "smooth",
-    });
+  const scroll = (offset) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: offset, behavior: "smooth" });
+    }
   };
 
   return (
     <div className="relative my-10 px-6">
       {/* Scroll Buttons */}
       <button
-        onClick={scrollLeft}
-        className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white border rounded-full shadow-md hover:bg-gray-100"
+        onClick={() => scroll(-300)}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white border rounded-full shadow-md hover:bg-gray-100"
       >
         <FaArrowLeft />
       </button>
 
       <button
-        onClick={scrollRight}
-        className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white border rounded-full shadow-md hover:bg-gray-100"
+        onClick={() => scroll(300)}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white border rounded-full shadow-md hover:bg-gray-100"
       >
         <FaArrowRight />
       </button>
 
-      {/* Scrollable Blog Cards */}
+      {/* Scrollable Blog List */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto space-x-4 scroll-smooth pb-4 no-scrollbar"
+        className="flex overflow-x-auto space-x-4 scrollbar-hide px-10"
       >
         {blogs && blogs.length > 0 ? (
           blogs.slice(0, 10).map((blog) => (
-            <div key={blog._id} className="min-w-[300px] flex-shrink-0">
+            <div key={blog._id} className="min-w-[280px] flex-shrink-0">
               <BlogCard blog={blog} />
             </div>
           ))
