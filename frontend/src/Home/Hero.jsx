@@ -90,6 +90,7 @@ function Hero() {
       {/* Scrollable Blog List */}
       <div
         ref={scrollRef}
+        className="flex overflow-x-auto space-x-4 scrollbar-hide px-10"
       >
         {blogs && blogs.length > 0 ? (
           blogs.slice(0, 10).map((blog) => (
