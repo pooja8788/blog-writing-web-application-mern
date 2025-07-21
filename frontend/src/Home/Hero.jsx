@@ -55,26 +55,67 @@
 // export default Hero;
 
 
+import { useRef } from "react";
 import { useAuth } from "../context/AuthProvider";
 import BlogCard from "./BlogCard";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 function Hero() {
   const { blogs } = useAuth();
+  const scrollRef = useRef(null);
+
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({
+      left: -300,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({
+      left: 300,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <div className="container mx-auto my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
-      {blogs && blogs.length > 0 ? (
-        blogs.slice(0, 4).map((blog) => (
-          <BlogCard key={blog._id} blog={blog} />
-        ))
-      ) : (
-        <div className="col-span-full flex justify-center items-center h-64 text-xl font-medium text-gray-600">
-          Loading...
-        </div>
-      )}
+    <div className="relative my-10 px-6">
+      {/* Scroll Buttons */}
+      <button
+        onClick={scrollLeft}
+        className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white border rounded-full shadow-md hover:bg-gray-100"
+      >
+        <FaArrowLeft />
+      </button>
+
+      <button
+        onClick={scrollRight}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white border rounded-full shadow-md hover:bg-gray-100"
+      >
+        <FaArrowRight />
+      </button>
+
+      {/* Scrollable Blog Cards */}
+      <div
+        ref={scrollRef}
+        className="flex overflow-x-auto space-x-4 scroll-smooth pb-4 no-scrollbar"
+      >
+        {blogs && blogs.length > 0 ? (
+          blogs.slice(0, 10).map((blog) => (
+            <div key={blog._id} className="min-w-[300px] flex-shrink-0">
+              <BlogCard blog={blog} />
+            </div>
+          ))
+        ) : (
+          <div className="flex justify-center items-center h-64 w-full text-xl font-medium text-gray-600">
+            Loading...
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
 export default Hero;
+
 

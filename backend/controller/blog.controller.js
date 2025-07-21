@@ -151,8 +151,8 @@ export const searchBlogs = async (req, res) => {
         { category: { $regex: query, $options: "i" } },
       ],
     })
-      .select("title about category adminName adminPhoto blogImage createdAt") // Only include necessary fields
-      .sort({ createdAt: -1 }); // Most recent first
+      .select("title about category adminName adminPhoto blogImage createdAt") 
+      .sort({ createdAt: -1 }); 
 
     res.status(200).json(blogs);
   } catch (error) {

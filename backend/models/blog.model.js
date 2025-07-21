@@ -55,7 +55,7 @@ const blogSchema = new mongoose.Schema({
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // References the users who liked this blog
+      ref: "User", 
     },
   ],
   createdAt: {
