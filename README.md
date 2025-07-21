@@ -1,4 +1,4 @@
 # Super30_Blog_application
-<!-- categories changed
+categories changed
 Coding as a Health
-Devotional as a Travel -->
+Devotional as a Travel
