@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthProvider";
 
 
 function Detail() {
-  const { toggleLikeBlog, isFavorite } = useAuth();
+  const { toggleFavorite, isFavorite } = useAuth();
   const { id } = useParams();
   const [blogs, setBlogs] = useState({});
   const [comment, setComment] = useState("");
@@ -89,7 +89,7 @@ function Detail() {
               </h1>
 
               <button
-                onClick={() => toggleLikeBlog(blogs._id)}
+                onClick={() => toggleFavorite(blogs._id)}
                 className={`text-sm px-4 py-2 rounded-md transition font-medium ${
                   isFavorite(blogs._id)
                     ? "bg-red-500 text-white"
@@ -109,12 +109,12 @@ function Detail() {
               <p className="text-lg font-semibold">{blogs?.adminName}</p>
             </div>
 
-            <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center bg-black">
+            <div className="flex flex-col md:flex-row">
               {blogs?.blogImage && (
                 <img
                   src={blogs?.blogImage?.url}
                   alt="mainblogsImg"
-                  className="w-full h-auto object-contain"
+                  className="md:w-1/2 w-full h-[500px] mb-6 rounded-lg shadow-lg cursor-pointer border"
                 />
               )}
               <div className="md:w-1/2 w-full md:pl-6">

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Devotional() {
   const { blogs } = useAuth();
-  const devotionalBlogs = blogs?.filter((blog) => blog.category === "Devotion");
+  const devotionalBlogs = blogs?.filter((blog) => blog.category === "Travel");
   console.log(devotionalBlogs);
   return (
     <div>
