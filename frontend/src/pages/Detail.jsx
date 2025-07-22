@@ -150,6 +150,8 @@ import { BACKEND_URL } from "../utils";
 import { useAuth } from "../context/AuthProvider";
 
 function Detail() {
+  const { profile } = useAuth(); // make sure this is added
+  const isLiked = blogs?.likes?.includes(profile?._id);
   const { id } = useParams();
   const [blogs, setBlogs] = useState({});
   const [comment, setComment] = useState("");
@@ -157,7 +159,7 @@ function Detail() {
   const [userName, setUserName] = useState("Guest");
 
   const { toggleLike, isBlogLikedByUser } = useAuth();
-  const isLiked = blogs?.likes && isBlogLikedByUser(blogs);
+  // const isLiked = blogs?.likes && isBlogLikedByUser(blogs);
 
   useEffect(() => {
     if (blogs?.adminName) {
@@ -182,10 +184,31 @@ function Detail() {
     };
     fetchBlogs();
   }, [id]);
+  const handleToggleLike = async () => {
+    await toggleLike(blogs._id);
+
+    // Optimistically update local likes state
+    setBlogs((prev) => {
+      const userId = profile?._id;
+      if (!userId) return prev;
+
+      const alreadyLiked = prev.likes?.includes(userId);
+      const updatedLikes = alreadyLiked
+        ? prev.likes.filter((id) => id !== userId)
+        : [...(prev.likes || []), userId];
+
+      return {
+        ...prev,
+        likes: updatedLikes,
+      };
+    });
+  };
 
   const fetchComments = async () => {
     try {
-      const { data } = await axios.get(`${BACKEND_URL}/api/blogs/${id}/comments`);
+      const { data } = await axios.get(
+        `${BACKEND_URL}/api/blogs/${id}/comments`
+      );
       setComments(data);
     } catch (err) {
       console.error("Failed to load comments", err);
@@ -233,7 +256,9 @@ function Detail() {
             </p>
 
             {/* Title */}
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">{blogs?.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-3">
+              {blogs?.title}
+            </h1>
 
             {/* Author Info and Like */}
             <div className="flex justify-between items-center mb-6">
@@ -256,7 +281,7 @@ function Detail() {
                 className={`text-2xl transition-transform duration-200 hover:scale-125 ${
                   isLiked ? "text-red-500" : "text-gray-400"
                 }`}
-                onClick={() => toggleLike(blogs._id)}
+                onClick={handleToggleLike}
                 title={isLiked ? "Unlike" : "Like"}
               >
                 {isLiked ? "❤️" : "🤍"}
