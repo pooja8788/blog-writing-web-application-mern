@@ -4,11 +4,9 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
-import { useAuth } from "../context/AuthProvider";
 
 
 function Detail() {
-  const { toggleFavorite, isFavorite } = useAuth();
   const { id } = useParams();
   const [blogs, setBlogs] = useState({});
   const [comment, setComment] = useState("");
@@ -81,23 +79,6 @@ function Detail() {
           <section className="container mx-auto p-4">
             <div className="text-blue-500 uppercase text-xs font-bold mb-4">
               {blogs?.category}
-            </div>
-            {/* Title and Favorite Button */}
-            <div className="flex items-center justify-between my-4">
-              <h1 className="text-4xl font-bold text-gray-800 leading-tight">
-                {blogs?.title}
-              </h1>
-
-              <button
-                onClick={() => toggleFavorite(blogs._id)}
-                className={`text-sm px-4 py-2 rounded-md transition font-medium ${
-                  isFavorite(blogs._id)
-                    ? "bg-red-500 text-white"
-                    : "bg-gray-200 text-gray-800"
-                }`}
-              >
-                {isFavorite(blogs._id) ? "★ Favorited" : "☆ Favorite"}
-              </button>
             </div>
             <h1 className="text-4xl font-bold mb-6">{blogs?.title}</h1>
             <div className="flex items-center mb-6">
