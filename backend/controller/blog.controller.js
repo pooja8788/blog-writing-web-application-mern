@@ -147,7 +147,7 @@ export const searchBlogs = async (req, res) => {
     const blogs = await Blog.find({
       $or: [
         { title: { $regex: query, $options: "i" } },
-        { about: { $regex: query, $options: "i" } },
+        { adminName: { $regex: query, $options: "i" } },
         { category: { $regex: query, $options: "i" } },
       ],
     })

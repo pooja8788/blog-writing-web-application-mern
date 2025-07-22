@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { BACKEND_URL } from "../utils"; 
-
+import { BACKEND_URL } from "../utils";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate(); // ✅ Moved inside the component
   const [email, setEmail] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
@@ -13,7 +14,6 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [cooldown, setCooldown] = useState(0);
 
-  // Countdown effect
   useEffect(() => {
     if (cooldown <= 0) return;
     const interval = setInterval(() => {
@@ -22,20 +22,18 @@ const ForgotPassword = () => {
     return () => clearInterval(interval);
   }, [cooldown]);
 
-  // Step 1: Send or Resend OTP
   const handleSendOtp = async () => {
     try {
       const { data } = await axios.post(`${BACKEND_URL}/api/users/send-otp`, { email });
 
       toast.success(data.message || "OTP sent to your email");
       setOtpSent(true);
-      setCooldown(60); // Start 60-second resend cooldown
+      setCooldown(60);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to send OTP");
     }
   };
 
-  // Step 2: Verify OTP
   const handleVerifyOtp = async () => {
     try {
       const { data } = await axios.post(`${BACKEND_URL}/api/users/verify-otp`, { email, otp });
@@ -46,7 +44,6 @@ const ForgotPassword = () => {
     }
   };
 
-  // Step 3: Reset Password
   const handleResetPassword = async () => {
     if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match");
@@ -54,10 +51,17 @@ const ForgotPassword = () => {
     }
 
     try {
-      const { data } = await axios.post(`${BACKEND_URL}/api/users/reset-password`, { email, newPassword });
+      const { data } = await axios.post(`${BACKEND_URL}/api/users/reset-password`, {
+        email,
+        newPassword,
+      });
 
       toast.success(data.message || "Password reset successful");
-      // Optionally redirect to login
+
+      // ✅ Redirect to login after 1 second
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to reset password");
     }
@@ -68,7 +72,6 @@ const ForgotPassword = () => {
       <div className="w-full max-w-md bg-white p-6 rounded shadow-md">
         <h2 className="text-2xl font-semibold text-center mb-4">Forgot Password</h2>
 
-        {/* Email Field */}
         <input
           type="email"
           placeholder="Enter your email"
@@ -78,7 +81,6 @@ const ForgotPassword = () => {
           disabled={otpVerified}
         />
 
-        {/* Send OTP / Resend OTP */}
         {!otpSent && (
           <button
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
@@ -103,7 +105,6 @@ const ForgotPassword = () => {
               </button>
             )}
 
-            {/* OTP Input */}
             <input
               type="text"
               placeholder="Enter OTP"
@@ -120,7 +121,6 @@ const ForgotPassword = () => {
           </>
         )}
 
-        {/* Reset Password Fields */}
         {otpVerified && (
           <>
             <input
