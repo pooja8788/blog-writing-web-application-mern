@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { BACKEND_URL } from "../utils"; 
+
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +25,8 @@ const ForgotPassword = () => {
   // Step 1: Send or Resend OTP
   const handleSendOtp = async () => {
     try {
-      const { data } = await axios.post("/api/users/send-otp", { email });
+      const { data } = await axios.post(`${BACKEND_URL}/api/users/send-otp`, { email });
+
       toast.success(data.message || "OTP sent to your email");
       setOtpSent(true);
       setCooldown(60); // Start 60-second resend cooldown
@@ -35,7 +38,7 @@ const ForgotPassword = () => {
   // Step 2: Verify OTP
   const handleVerifyOtp = async () => {
     try {
-      const { data } = await axios.post("/api/users/verify-otp", { email, otp });
+      const { data } = await axios.post(`${BACKEND_URL}/api/users/verify-otp`, { email, otp });
       toast.success(data.message || "OTP verified");
       setOtpVerified(true);
     } catch (error) {
@@ -51,10 +54,10 @@ const ForgotPassword = () => {
     }
 
     try {
-      const { data } = await axios.post("/api/users/reset-password", {
-        email,
-        newPassword,
-      });
+      const { data } = await axios.post(`${BACKEND_URL}/api/users/reset-password`, {
+  email,
+  newPassword,
+});
       toast.success(data.message || "Password reset successful");
       // Optionally redirect to login
     } catch (error) {
