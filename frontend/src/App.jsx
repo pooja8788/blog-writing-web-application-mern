@@ -16,6 +16,7 @@ import UpdateBlog from "./dashboard/UpdateBlog.jsx";
 import Detail from "./pages/Detail.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Footer from "./components/Footer.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx"
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
         <Route exact path="/blog/:id" element={<Detail />} />
         <Route exact path="/blog/update/:id" element={<UpdateBlog />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="ForgotPassword" element={<ForgotPassword />} />
       </Routes>
       <Toaster />
       {!hideNavbarFooter && <Footer />}
