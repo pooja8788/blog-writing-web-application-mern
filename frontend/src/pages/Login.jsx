@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { BACKEND_URL } from "../utils";
 
-
 function Login() {
   const { isAuthenticated, setIsAuthenticated, setProfile } = useAuth();
 
@@ -90,12 +89,19 @@ function Login() {
               />
             </div>
 
-            <p className="text-center mb-4">
-              New User?{" "}
-              <Link to={"/register"} className="text-blue-600">
-                Register Now
-              </Link>
-            </p>
+            <div className="text-center mb-4">
+              <p>
+                New User?{" "}
+                <Link to="/register" className="text-blue-600">
+                  Register Now
+                </Link>
+              </p>
+              <p>
+                <Link to="/forgot-password" className="text-blue-600">
+                  Forgot Password?
+                </Link>
+              </p>
+            </div>
             <button
               type="submit"
               className="w-full p-2 bg-blue-500 hover:bg-blue-800 duration-300 rounded-md text-white"

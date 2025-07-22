@@ -230,7 +230,7 @@ export const updateBlog = async (req, res) => {
 // Toggle Like/Unlike a blog post
 export const toggleLikeBlog = async (req, res) => {
   try {
-    const userId = req.user.id; // From isAuthenticated middleware
+    const userId = req.user.id; 
     const blogId = req.params.id;
 
     const blog = await Blog.findById(blogId);
@@ -238,13 +238,12 @@ export const toggleLikeBlog = async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    // Check if user has already liked this blog
     const alreadyLiked = blog.likes.includes(userId);
 
     if (alreadyLiked) {
-      blog.likes.pull(userId); // Remove like
+      blog.likes.pull(userId); 
     } else {
-      blog.likes.push(userId); // Add like
+      blog.likes.push(userId); 
     }
 
     await blog.save();

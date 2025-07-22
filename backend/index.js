@@ -66,3 +66,15 @@ cloudinary.config({
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+import rateLimit from "express-rate-limit";
+
+// Apply rate limit only to OTP route
+const otpLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 3, // max 3 requests per window
+  message: "Too many OTP requests from this IP. Try again after 5 minutes.",
+});
+
+app.use("/api/users/send-otp", otpLimiter);

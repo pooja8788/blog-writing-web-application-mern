@@ -7,6 +7,9 @@ import {
   register,
   toggleFavorite,
   getFavorites,
+  sendOtp,
+  verifyOtp,
+  resetPassword,
 } from "../controller/user.controller.js";
 import { isAuthenticated } from "../middleware/authUser.js";
 
@@ -19,5 +22,8 @@ router.get("/my-profile", isAuthenticated, getMyProfile);
 router.get("/admins", getAdmins);
 router.get("/favorites", isAuthenticated, getFavorites);
 router.post("/toggle-favorite/:blogId", isAuthenticated, toggleFavorite);
+router.post("/send-otp", sendOtp);
+router.post("/verify-otp", verifyOtp);
+router.post("/reset-password", resetPassword);
 
 export default router;
