@@ -5,8 +5,7 @@ import createTokenAndSaveCookies from "../jwt/AuthToken.js";
 import sendEmail from "../utils/sendEmail.js";
 import Otp from "../models/Otp.js";
 
-
-const otpThrottle = new Map(); 
+const otpThrottle = new Map();
 const otpStore = new Map();
 const generateOtp = () => Math.floor(1000 + Math.random() * 9000).toString();
 setInterval(() => {
@@ -151,7 +150,7 @@ export const getMyProfile = async (req, res) => {
       phone: user.phone,
       education: user.education,
       role: user.role,
-      avatar: user.photo, 
+      avatar: user.photo,
       createdAt: user.createdAt,
     },
   });
@@ -161,7 +160,6 @@ export const getAdmins = async (req, res) => {
   const admins = await User.find({ role: "admin" });
   res.status(200).json({ admins });
 };
-
 
 export const toggleFavorite = async (req, res) => {
   try {
@@ -218,7 +216,6 @@ export const sendOtp = async (req, res) => {
           message: "Please wait before requesting another OTP",
         });
       }
-
       // Remove the old OTP so we can send a fresh one
       await Otp.deleteOne({ _id: existingOtp._id });
     }
@@ -238,8 +235,6 @@ export const sendOtp = async (req, res) => {
   }
 };
 
-
-
 // 2. Verify OTP
 export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
@@ -256,7 +251,7 @@ export const verifyOtp = async (req, res) => {
     }
 
     if (otpEntry.expiresAt < new Date()) {
-      await Otp.deleteOne({ _id: otpEntry._id }); // clean expired
+      await Otp.deleteOne({ _id: otpEntry._id });
       return res.status(400).json({ message: "OTP has expired" });
     }
 
@@ -264,8 +259,8 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // Optional: delete OTP after successful verification
-    await Otp.deleteOne({ _id: otpEntry._id });
+    otpEntry.verified = true;
+    await otpEntry.save();
 
     return res.status(200).json({ message: "OTP verified successfully" });
   } catch (error) {
@@ -274,25 +269,28 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-
 // 3. Reset Password
 export const resetPassword = async (req, res) => {
   const { email, newPassword } = req.body;
 
   if (!email || !newPassword) {
-    return res.status(400).json({ message: "Email and new password are required" });
+    return res
+      .status(400)
+      .json({ message: "Email and new password are required" });
   }
 
   try {
     const otpEntry = await Otp.findOne({ email });
 
-    if (!otpEntry) {
+    if (!otpEntry || !otpEntry.verified) {
       return res.status(403).json({ message: "OTP verification required" });
     }
 
     if (otpEntry.expiresAt < new Date()) {
       await Otp.deleteOne({ _id: otpEntry._id });
-      return res.status(403).json({ message: "OTP has expired. Please request a new one." });
+      return res
+        .status(403)
+        .json({ message: "OTP has expired. Please request a new one." });
     }
 
     const user = await User.findOne({ email });
@@ -302,7 +300,6 @@ export const resetPassword = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
-
     await user.save();
 
     await Otp.deleteMany({ email });

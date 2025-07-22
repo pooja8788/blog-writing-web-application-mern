@@ -12,9 +12,14 @@ const otpSchema = new mongoose.Schema({
   expiresAt: {
     type: Date,
     required: true,
-    index: { expires: 0 }, 
+    index: { expires: 0 },
+  },
+  verified: {
+    type: Boolean,
+    default: false,
   },
 });
+
 
 const Otp = mongoose.model("Otp", otpSchema);
 export default Otp;
