@@ -254,7 +254,6 @@ function Navbar() {
               <Link to="/" onClick={() => setShow(false)} className="hover:text-blue-500">HOME</Link>
               <Link to="/blogs" onClick={() => setShow(false)} className="hover:text-blue-500">BLOGS</Link>
               <Link to="/creators" onClick={() => setShow(false)} className="hover:text-blue-500">CREATORS</Link>
-              <Link to="/about" onClick={() => setShow(false)} className="hover:text-blue-500">ABOUT</Link>
               <Link to="/contact" onClick={() => setShow(false)} className="hover:text-blue-500">CONTACT</Link>
               <Link to="/favorites" onClick={() => setShow(false)} className="hover:text-blue-500">FAVORITES ❤</Link>
               {isAuthenticated && profile?.role === "admin" && (
