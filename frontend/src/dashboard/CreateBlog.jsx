@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import {BACKEND_URL} from "../utils";
 
 function CreateBlog() {
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [about, setAbout] = useState("");
@@ -24,6 +25,8 @@ function CreateBlog() {
 
   const handleCreateBlog = async (e) => {
     e.preventDefault();
+     if (loading) return; 
+    setLoading(true);
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
@@ -40,7 +43,7 @@ function CreateBlog() {
           },
         }
       );
-      toast.success(data.message || "User registered successfully");
+      toast.success(data.message || "Blog created successfully");
       setTitle("");
       setCategory("");
       setAbout("");
@@ -48,6 +51,8 @@ function CreateBlog() {
       setBlogImagePreview("");
     } catch (error) {
       toast.error(error.message || "Please fill the required fields");
+    }finally {
+      setLoading(false); // Re-enable the button
     }
   };
   return (
@@ -112,6 +117,7 @@ function CreateBlog() {
 
             <button
               type="submit"
+              disabled={loading}
               className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200"
             >
               Post Blog
