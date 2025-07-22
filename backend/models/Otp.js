@@ -12,10 +12,9 @@ const otpSchema = new mongoose.Schema({
   expiresAt: {
     type: Date,
     required: true,
-    index: { expires: 0 }, // TTL index to auto-delete expired OTPs
+    expires: 0, // Auto-delete document when `expiresAt` is reached
   },
 });
 
 const Otp = mongoose.model("Otp", otpSchema);
 export default Otp;
-    
