@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { BACKEND_URL } from "../utils";
+import ForgotPassword from "./ForgotPassword";
 
 function Login() {
   const { isAuthenticated, setIsAuthenticated, setProfile } = useAuth();
@@ -97,7 +98,7 @@ function Login() {
                 </Link>
               </p>
               <p>
-                <Link to="/forgot-password" className="text-blue-600">
+                <Link to="/ForgotPassword" className="text-blue-600">
                   Forgot Password?
                 </Link>
               </p>
