@@ -156,8 +156,25 @@ function Detail() {
   const [comments, setComments] = useState([]);
   const [userName, setUserName] = useState("Guest");
 
-  const { toggleLike, isBlogLikedByUser } = useAuth();
-  const isLiked = blogs?.likes && isBlogLikedByUser(blogs);
+  const { toggleLike, isBlogLikedByUser, profile } = useAuth();
+  const isLiked = blogs?.likes?.includes(profile?._id);
+
+  // Optimistic Like Handler
+  const handleToggleLike = async () => {
+    try {
+      await toggleLike(blogs._id);
+      const alreadyLiked = blogs.likes?.includes(profile?._id);
+
+      setBlogs((prev) => ({
+        ...prev,
+        likes: alreadyLiked
+          ? prev.likes.filter((id) => id !== profile._id)
+          : [...(prev.likes || []), profile._id],
+      }));
+    } catch (err) {
+      console.error("Like failed", err);
+    }
+  };
 
   useEffect(() => {
     if (blogs?.adminName) {
@@ -256,7 +273,7 @@ function Detail() {
                 className={`text-2xl transition-transform duration-200 hover:scale-125 ${
                   isLiked ? "text-red-500" : "text-gray-400"
                 }`}
-                onClick={() => toggleLike(blogs._id)}
+                onClick={handleToggleLike}
                 title={isLiked ? "Unlike" : "Like"}
               >
                 {isLiked ? "❤️" : "🤍"}

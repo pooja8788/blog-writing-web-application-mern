@@ -225,9 +225,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.log("Error fetching profile:", error);
-      setIsAuthenticated(false);
-      setProfile(null);
-
     }
   };
 
