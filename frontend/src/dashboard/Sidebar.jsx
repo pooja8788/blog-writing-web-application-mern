@@ -152,7 +152,6 @@ function Sidebar({ setComponent }) {
 
   return (
     <>
-      {/* Menu Button: Always visible at top left */}
       <div
         className="fixed top-4 left-4 z-50"
         onClick={() => setMinimized((prev) => !prev)}
@@ -172,7 +171,7 @@ function Sidebar({ setComponent }) {
             <>
               <img
                 className="w-24 h-24 rounded-full mx-auto mb-2"
-                src={profile?.user?.avatar?.url?.replace("http://", "https://") ||
+                src={profile?.avatar?.url?.replace("http://", "https://") ||
   "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                 alt=""
               />
