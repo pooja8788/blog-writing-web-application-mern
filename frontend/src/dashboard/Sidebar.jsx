@@ -175,7 +175,10 @@ function Sidebar({ setComponent }) {
   "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                 alt=""
               />
-              <p className="text-lg font-semibold">{profile?.user?.name}</p>
+              <p className="text-lg font-semibold">
+            {profile?.name || "User"}
+          </p>
+
             </>
           )}
           {minimized && (
