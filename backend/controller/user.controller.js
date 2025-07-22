@@ -284,7 +284,6 @@ export const resetPassword = async (req, res) => {
   }
 
   try {
-    // ✅ Check if OTP for this email still exists
     const otpEntry = await Otp.findOne({ email });
 
     if (!otpEntry) {

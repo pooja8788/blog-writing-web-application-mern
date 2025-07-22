@@ -54,10 +54,8 @@ const ForgotPassword = () => {
     }
 
     try {
-      const { data } = await axios.post(`${BACKEND_URL}/api/users/reset-password`, {
-  email,
-  newPassword,
-});
+      const { data } = await axios.post(`${BACKEND_URL}/api/users/reset-password`, { email, newPassword });
+
       toast.success(data.message || "Password reset successful");
       // Optionally redirect to login
     } catch (error) {
