@@ -147,7 +147,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
-import { useAuth } from "../context/AuthProvider"; // ✅ for like functionality
+import { useAuth } from "../context/AuthProvider";
 
 function Detail() {
   const { id } = useParams();
@@ -156,7 +156,8 @@ function Detail() {
   const [comments, setComments] = useState([]);
   const [userName, setUserName] = useState("Guest");
 
-  const { toggleLike, isBlogLikedByUser } = useAuth(); // ✅ Like logic from context
+  const { toggleLike, isBlogLikedByUser } = useAuth();
+  const isLiked = blogs?.likes && isBlogLikedByUser(blogs);
 
   useEffect(() => {
     if (blogs?.adminName) {
@@ -164,7 +165,6 @@ function Detail() {
     }
   }, [blogs]);
 
-  // Fetch blog detail
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -172,21 +172,17 @@ function Detail() {
           `${BACKEND_URL}/api/blogs/single-blog/${id}`,
           {
             withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           }
         );
         setBlogs(data);
       } catch (error) {
         console.log(error);
-        toast.error("Failed to load blog");
       }
     };
     fetchBlogs();
   }, [id]);
 
-  // Fetch comments
   const fetchComments = async () => {
     try {
       const { data } = await axios.get(`${BACKEND_URL}/api/blogs/${id}/comments`);
@@ -200,7 +196,6 @@ function Detail() {
     fetchComments();
   }, [id]);
 
-  // Add comment
   const handleAddComment = async () => {
     if (!comment.trim()) return toast.error("Comment cannot be empty");
     try {
@@ -217,69 +212,66 @@ function Detail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+    <div className="min-h-screen bg-gray-100 py-8 px-4">
       {blogs && (
-        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-          {/* 🖼️ Blog Cover Image */}
+        <section className="container mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+          {/* Blog Image */}
           {blogs?.blogImage?.url && (
-            <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center bg-black">
+            <div className="w-full h-[350px] md:h-[450px] overflow-hidden">
               <img
                 src={blogs.blogImage.url}
-                alt="Blog Banner"
-                className="w-full h-auto object-contain"
+                alt="Blog"
+                className="w-full h-full object-cover"
               />
             </div>
           )}
 
-          {/* 📄 Blog Details */}
           <div className="p-6">
             {/* Category */}
-            <p className="text-blue-500 uppercase text-xs font-bold mb-2">
+            <p className="text-blue-600 uppercase text-sm font-semibold mb-1">
               {blogs?.category}
             </p>
 
-            {/* Title & Like Button */}
-            <div className="flex items-center justify-between mb-4">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-                {blogs?.title}
-              </h1>
+            {/* Title */}
+            <h1 className="text-3xl font-bold text-gray-900 mb-3">{blogs?.title}</h1>
 
+            {/* Author Info and Like */}
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center">
+                <img
+                  src={blogs?.adminPhoto || "/user.png"}
+                  alt={blogs?.adminName}
+                  className="w-12 h-12 rounded-full border-2 border-yellow-400"
+                />
+                <div className="ml-4">
+                  <p className="text-lg font-semibold text-gray-800">
+                    {blogs?.adminName}
+                  </p>
+                  <p className="text-xs text-gray-500">Posted</p>
+                </div>
+              </div>
+
+              {/* ❤️ Like Button */}
               <button
-                className={`text-2xl ml-2 transition-transform duration-200 hover:scale-125 ${
-                  isBlogLikedByUser(blogs._id) ? "text-red-500" : "text-gray-400"
+                className={`text-2xl transition-transform duration-200 hover:scale-125 ${
+                  isLiked ? "text-red-500" : "text-gray-400"
                 }`}
                 onClick={() => toggleLike(blogs._id)}
-                title={isBlogLikedByUser(blogs._id) ? "Unlike" : "Like"}
+                title={isLiked ? "Unlike" : "Like"}
               >
-                {isBlogLikedByUser(blogs._id) ? "❤️" : "🤍"}
+                {isLiked ? "❤️" : "🤍"}
               </button>
             </div>
 
-            {/* Author Info */}
-            <div className="flex items-center gap-4 mb-6">
-              <img
-                src={blogs?.adminPhoto || "/user.png"}
-                alt="Author"
-                className="w-12 h-12 rounded-full object-cover border"
-              />
-              <p className="text-lg font-semibold text-gray-700">
-                {blogs?.adminName}
-              </p>
-            </div>
+            {/* Description */}
+            <p className="text-lg text-gray-700 leading-8">{blogs?.about}</p>
 
-            {/* Blog Content */}
-            <p className="text-lg text-gray-800 leading-7 whitespace-pre-line">
-              {blogs?.about}
-            </p>
-          </div>
-
-          {/* 💬 Comments Section (unchanged) */}
-          <div className="px-6 pb-10">
+            {/* Comments */}
             <div className="mt-10 border-t pt-6">
               <h2 className="text-2xl font-semibold mb-4">Comments</h2>
 
               <textarea
-                className="w-full p-2 border rounded mb-2"
+                className="w-full p-3 border rounded mb-2"
                 placeholder="Write a comment..."
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
@@ -307,7 +299,7 @@ function Detail() {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       )}
     </div>
   );
