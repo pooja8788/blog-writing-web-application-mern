@@ -147,7 +147,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../context/AuthProvider"; // ✅ for like functionality
 
 function Detail() {
   const { id } = useParams();
@@ -155,7 +155,8 @@ function Detail() {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userName, setUserName] = useState("Guest");
-  const { toggleLike, isBlogLikedByUser } = useAuth();
+
+  const { toggleLike, isBlogLikedByUser } = useAuth(); // ✅ Like logic from context
 
   useEffect(() => {
     if (blogs?.adminName) {
@@ -179,6 +180,7 @@ function Detail() {
         setBlogs(data);
       } catch (error) {
         console.log(error);
+        toast.error("Failed to load blog");
       }
     };
     fetchBlogs();
@@ -187,9 +189,7 @@ function Detail() {
   // Fetch comments
   const fetchComments = async () => {
     try {
-      const { data } = await axios.get(
-        `${BACKEND_URL}/api/blogs/${id}/comments`
-      );
+      const { data } = await axios.get(`${BACKEND_URL}/api/blogs/${id}/comments`);
       setComments(data);
     } catch (err) {
       console.error("Failed to load comments", err);
@@ -219,8 +219,8 @@ function Detail() {
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       {blogs && (
-        <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-          {/* Blog Cover Image */}
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+          {/* 🖼️ Blog Cover Image */}
           {blogs?.blogImage?.url && (
             <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center bg-black">
               <img
@@ -231,22 +231,22 @@ function Detail() {
             </div>
           )}
 
+          {/* 📄 Blog Details */}
           <div className="p-6">
             {/* Category */}
-            <span className="text-sm text-blue-600 uppercase font-semibold tracking-wide">
+            <p className="text-blue-500 uppercase text-xs font-bold mb-2">
               {blogs?.category}
-            </span>
+            </p>
 
-            {/* Title and Like */}
-            <div className="flex items-center justify-between my-4">
-              <h1 className="text-4xl font-bold text-gray-800 leading-tight">
+            {/* Title & Like Button */}
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
                 {blogs?.title}
               </h1>
+
               <button
                 className={`text-2xl ml-2 transition-transform duration-200 hover:scale-125 ${
-                  isBlogLikedByUser(blogs._id)
-                    ? "text-red-500"
-                    : "text-gray-400"
+                  isBlogLikedByUser(blogs._id) ? "text-red-500" : "text-gray-400"
                 }`}
                 onClick={() => toggleLike(blogs._id)}
                 title={isBlogLikedByUser(blogs._id) ? "Unlike" : "Like"}
@@ -256,26 +256,24 @@ function Detail() {
             </div>
 
             {/* Author Info */}
-            <div className="flex items-center gap-4 my-4">
+            <div className="flex items-center gap-4 mb-6">
               <img
-                src={blogs?.adminPhoto}
+                src={blogs?.adminPhoto || "/user.png"}
                 alt="Author"
-                className="w-12 h-12 rounded-full object-cover"
+                className="w-12 h-12 rounded-full object-cover border"
               />
-              <div>
-                <p className="text-lg font-semibold text-gray-700">
-                  {blogs?.adminName}
-                </p>
-              </div>
+              <p className="text-lg font-semibold text-gray-700">
+                {blogs?.adminName}
+              </p>
             </div>
 
             {/* Blog Content */}
-            <div className="prose max-w-none text-lg text-gray-800 leading-8">
+            <p className="text-lg text-gray-800 leading-7 whitespace-pre-line">
               {blogs?.about}
-            </div>
+            </p>
           </div>
 
-          {/* 🔽 Comments Section (Unchanged) */}
+          {/* 💬 Comments Section (unchanged) */}
           <div className="px-6 pb-10">
             <div className="mt-10 border-t pt-6">
               <h2 className="text-2xl font-semibold mb-4">Comments</h2>
