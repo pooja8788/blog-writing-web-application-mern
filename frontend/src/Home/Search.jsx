@@ -314,7 +314,9 @@ const Search = () => {
                       cursor: "pointer",
                       display: "flex",
                       flexDirection: "column",
-                      height: "400px", // Fixed height for all cards
+                      justifyContent: "space-between",
+                      height: "400px", // fixed height
+                      maxHeight: "400px",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "scale(1.02)";
@@ -335,56 +337,41 @@ const Search = () => {
                         objectPosition: "center",
                         borderBottom: "1px solid #eee",
                         backgroundColor: "#f2f2f2",
-                        flexShrink: 0, // Prevent image from shrinking
                       }}
                       onError={(e) => {
                         e.target.src = "/default.jpg";
                       }}
                     />
-                    <div 
-                      style={{ 
-                        padding: "1rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        flex: 1, // Take remaining space
-                        minHeight: 0, // Allow flex item to shrink
-                      }}
-                    >
-                      <div>
-                        <p
-                          style={{
-                            color: "#0a66c2",
-                            fontWeight: "bold",
-                            textTransform: "uppercase",
-                            fontSize: "0.85rem",
-                            marginBottom: "0.5rem",
-                          }}
-                        >
-                          {post.category}
-                        </p>
-                        <h2
-                          style={{
-                            fontSize: "1.25rem",
-                            marginBottom: "0.75rem",
-                            lineHeight: "1.4",
-                            color: "#222",
-                            display: "-webkit-box",
-                            WebkitLineClamp: 2, // Limit to 2 lines
-                            WebkitBoxOrient: "vertical",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            minHeight: "2.8rem", // Reserve space for 2 lines
-                          }}
-                        >
-                          {post.title}
-                        </h2>
-                      </div>
+                    <div style={{ padding: "1rem", overflow: "hidden" }}>
+                      <p
+                        style={{
+                          color: "#0a66c2",
+                          fontWeight: "bold",
+                          textTransform: "uppercase",
+                          fontSize: "0.85rem",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
+                        {post.category}
+                      </p>
+                      <h2
+                        style={{
+                          fontSize: "1.25rem",
+                          marginBottom: "0.75rem",
+                          lineHeight: "1.4",
+                          color: "#222",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {post.title}
+                      </h2>
                       <div
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          marginTop: "auto", // Push to bottom
+                          marginTop: "0.75rem",
                         }}
                       >
                         <img
@@ -395,23 +382,12 @@ const Search = () => {
                             height: "40px",
                             borderRadius: "50%",
                             marginRight: "10px",
-                            flexShrink: 0, // Prevent avatar from shrinking
                           }}
                           onError={(e) => {
                             e.target.src = "/default-user.jpg";
                           }}
                         />
-                        <p 
-                          style={{ 
-                            fontWeight: "500", 
-                            color: "#333",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {post.adminName}
-                        </p>
+                        <p style={{ fontWeight: "500", color: "#333" }}>{post.adminName}</p>
                       </div>
                     </div>
                   </div>
