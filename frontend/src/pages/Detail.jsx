@@ -202,7 +202,9 @@ function Detail() {
 
   const fetchComments = async () => {
     try {
-      const { data } = await axios.get(`${BACKEND_URL}/api/blogs/${id}/comments`);
+      const { data } = await axios.get(
+        `${BACKEND_URL}/api/blogs/${id}/comments`
+      );
       setComments(data);
     } catch (err) {
       console.error("Failed to load comments", err);
@@ -234,11 +236,11 @@ function Detail() {
         <section className="container mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           {/* Blog Image */}
           {blogs?.blogImage?.url && (
-            <div className="w-full h-[350px] md:h-[450px] overflow-hidden">
+            <div className="w-full max-h-[600px] overflow-auto bg-white p-2">
               <img
                 src={blogs.blogImage.url}
                 alt="Blog"
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain mx-auto"
               />
             </div>
           )}
@@ -250,7 +252,9 @@ function Detail() {
             </p>
 
             {/* Title */}
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">{blogs?.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-3">
+              {blogs?.title}
+            </h1>
 
             {/* Author Info and Like */}
             <div className="flex justify-between items-center mb-6">
