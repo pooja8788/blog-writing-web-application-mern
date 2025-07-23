@@ -132,7 +132,7 @@ function Login() {
   const navigateTo = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("user");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -183,25 +183,27 @@ function Login() {
           <div className="mb-4">
             <p className="mb-2 font-medium text-gray-700">Select Role:</p>
             <div className="flex gap-6">
-              <label className="flex items-center">
+              <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="radio"
+                  name="role"
                   value="user"
                   checked={role === "user"}
                   onChange={(e) => setRole(e.target.value)}
-                  className="mr-2"
+                  className="accent-blue-500 w-4 h-4"
                 />
-                User
+                <span className="text-gray-700">User</span>
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="radio"
+                  name="role"
                   value="admin"
                   checked={role === "admin"}
                   onChange={(e) => setRole(e.target.value)}
-                  className="mr-2"
+                  className="accent-blue-500 w-4 h-4"
                 />
-                Creator
+                <span className="text-gray-700">Creator</span>
               </label>
             </div>
           </div>
