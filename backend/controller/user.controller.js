@@ -61,7 +61,7 @@ export const register = async (req, res) => {
         public_id: cloudinaryResponse.public_id,
         url: cloudinaryResponse.url,
       },
-      creatorAgreementAccepted: role === "admin", // ✅ Mark agreement as accepted if registering as creator
+      creatorAgreementAccepted: role === "admin", 
     });
 
     await newUser.save();
@@ -124,7 +124,6 @@ export const login = async (req, res) => {
       token: token,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error: "Internal Server error" });
   }
 };
@@ -134,7 +133,6 @@ export const logout = (req, res) => {
     res.clearCookie("jwt");
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error: "Internal Server error" });
   }
 };
