@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  creatorAgreementAccepted: {
+  type: Boolean,
+  default: false,
+},
   token: {
     type: String,
   },

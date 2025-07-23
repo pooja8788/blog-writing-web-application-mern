@@ -1,4 +1,5 @@
 
+
 // import { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 // import { AiOutlineMenu } from "react-icons/ai";
@@ -16,10 +17,9 @@
 //   const handleLogout = async (e) => {
 //     e.preventDefault();
 //     try {
-//       const { data } = await axios.get(
-//        `${BACKEND_URL}/api/users/logout`,
-//         { withCredentials: true }
-//       );
+//       const { data } = await axios.get(`${BACKEND_URL}/api/users/logout`, {
+//         withCredentials: true,
+//       });
 //       localStorage.removeItem("jwt");
 //       toast.success(data.message);
 //       setIsAuthenticated(false);
@@ -27,6 +27,26 @@
 //     } catch (error) {
 //       console.log(error);
 //       toast.error("Failed to logout");
+//     }
+//   };
+
+//   const handleBecomeCreator = async () => {
+//     const confirm = window.confirm(
+//       "After becoming a creator, you cannot become a user again. Do you want to proceed?"
+//     );
+//     if (!confirm) return;
+
+//     try {
+//       const { data } = await axios.patch(
+//         `${BACKEND_URL}/api/users/become-creator`,
+//         {},
+//         { withCredentials: true }
+//       );
+//       toast.success(data.message);
+//       window.location.reload(); // Refresh to reflect new state
+//     // eslint-disable-next-line no-unused-vars
+//     } catch (err) {
+//       toast.error("Failed to become a creator");
 //     }
 //   };
 
@@ -40,7 +60,7 @@
 //             Swar<span className="text-blue-500">Lekhan</span>
 //           </div>
 
-//           {/* Desktop */}
+//           {/* Desktop Nav */}
 //           <div className="mx-6">
 //             <ul className="hidden md:flex space-x-6">
 //               <Link to="/" className="hover:text-blue-500">HOME</Link>
@@ -54,7 +74,7 @@
 //             </div>
 //           </div>
 
-//           {/* Right side (buttons) */}
+//           {/* Desktop Buttons */}
 //           <div className="hidden md:flex space-x-2">
 //             {isAuthenticated && profile?.role === "admin" && (
 //               <Link
@@ -63,6 +83,15 @@
 //               >
 //                 DASHBOARD
 //               </Link>
+//             )}
+
+//             {isAuthenticated && profile?.role === "user" && !profile?.isCreator && (
+//               <button
+//                 onClick={handleBecomeCreator}
+//                 className="bg-yellow-500 text-white font-semibold hover:bg-yellow-600 duration-300 px-4 py-2 rounded"
+//               >
+//                 ✍️ Become Creator
+//               </button>
 //             )}
 
 //             {!isAuthenticated ? (
@@ -92,13 +121,27 @@
 //               <Link to="/creators" onClick={() => setShow(false)} className="hover:text-blue-500">CREATORS</Link>
 //               <Link to="/contact" onClick={() => setShow(false)} className="hover:text-blue-500">CONTACT</Link>
 //               <Link to="/favorites" onClick={() => setShow(false)} className="hover:text-blue-500">FAVORITES ❤</Link>
+
 //               {isAuthenticated && profile?.role === "admin" && (
 //                 <Link to="/dashboard" onClick={() => setShow(false)} className="hover:text-blue-500">
 //                   DASHBOARD
 //                 </Link>
 //               )}
+
+//               {isAuthenticated && profile?.role === "user" && !profile?.isCreator && (
+//                 <button
+//                   onClick={() => {
+//                     setShow(false);
+//                     handleBecomeCreator();
+//                   }}
+//                   className="text-yellow-600 hover:text-yellow-800"
+//                 >
+//                   ✍️ Become Creator
+//                 </button>
+//               )}
+
 //               {!isAuthenticated ? (
-//                 <Link to="/login" onClick={() => setShow(false)} className="hover:text-red-600">
+//                 <Link to="/login" onClick={() => setShow(false)} className="text-red-600 hover:text-red-800">
 //                   LOGIN
 //                 </Link>
 //               ) : (
@@ -122,6 +165,7 @@
 
 // export default Navbar;
 
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -130,9 +174,11 @@ import { useAuth } from "../context/AuthProvider";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { BACKEND_URL } from "../utils";
+import CreatorContractModal from "../components/CreatorContractModal"; // 👈 NEW
 
 function Navbar() {
   const [show, setShow] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // 👈 NEW
   const { profile, isAuthenticated, setIsAuthenticated, loading } = useAuth();
   const navigateTo = useNavigate();
 
@@ -152,20 +198,15 @@ function Navbar() {
     }
   };
 
-  const handleBecomeCreator = async () => {
-    const confirm = window.confirm(
-      "After becoming a creator, you cannot become a user again. Do you want to proceed?"
-    );
-    if (!confirm) return;
-
+  const handleBecomeCreatorConfirmed = async () => {
     try {
-      const { data } = await axios.patch(
+      const { data } = await axios.post(
         `${BACKEND_URL}/api/users/become-creator`,
         {},
         { withCredentials: true }
       );
       toast.success(data.message);
-      window.location.reload(); // Refresh to reflect new state
+      window.location.reload();
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
       toast.error("Failed to become a creator");
@@ -182,7 +223,6 @@ function Navbar() {
             Swar<span className="text-blue-500">Lekhan</span>
           </div>
 
-          {/* Desktop Nav */}
           <div className="mx-6">
             <ul className="hidden md:flex space-x-6">
               <Link to="/" className="hover:text-blue-500">HOME</Link>
@@ -196,7 +236,6 @@ function Navbar() {
             </div>
           </div>
 
-          {/* Desktop Buttons */}
           <div className="hidden md:flex space-x-2">
             {isAuthenticated && profile?.role === "admin" && (
               <Link
@@ -209,7 +248,7 @@ function Navbar() {
 
             {isAuthenticated && profile?.role === "user" && !profile?.isCreator && (
               <button
-                onClick={handleBecomeCreator}
+                onClick={() => setModalOpen(true)}
                 className="bg-yellow-500 text-white font-semibold hover:bg-yellow-600 duration-300 px-4 py-2 rounded"
               >
                 ✍️ Become Creator
@@ -234,7 +273,7 @@ function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile */}
         {show && (
           <div className="bg-white">
             <ul className="flex flex-col h-screen items-center justify-center space-y-3 md:hidden text-xl">
@@ -254,7 +293,7 @@ function Navbar() {
                 <button
                   onClick={() => {
                     setShow(false);
-                    handleBecomeCreator();
+                    setModalOpen(true);
                   }}
                   className="text-yellow-600 hover:text-yellow-800"
                 >
@@ -281,8 +320,16 @@ function Navbar() {
           </div>
         )}
       </nav>
+
+      {/* 👇 Creator Contract Modal */}
+      <CreatorContractModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onAgree={handleBecomeCreatorConfirmed}
+      />
     </>
   );
 }
 
 export default Navbar;
+

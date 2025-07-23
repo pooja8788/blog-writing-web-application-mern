@@ -23,6 +23,7 @@ export const register = async (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "User photo is required" });
     }
+
     const { photo } = req.files;
     const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
     if (!allowedFormats.includes(photo.mimetype)) {
@@ -30,31 +31,25 @@ export const register = async (req, res) => {
         message: "Invalid photo format. Only jpg and png are allowed",
       });
     }
+
     const { email, name, password, phone, education, role } = req.body;
-    if (
-      !email ||
-      !name ||
-      !password ||
-      !phone ||
-      !education ||
-      !role ||
-      !photo
-    ) {
+
+    if (!email || !name || !password || !phone || !education || !role || !photo) {
       return res.status(400).json({ message: "Please fill required fields" });
     }
+
     const user = await User.findOne({ email });
     if (user) {
-      return res
-        .status(400)
-        .json({ message: "User already exists with this email" });
+      return res.status(400).json({ message: "User already exists with this email" });
     }
-    const cloudinaryResponse = await cloudinary.uploader.upload(
-      photo.tempFilePath
-    );
+
+    const cloudinaryResponse = await cloudinary.uploader.upload(photo.tempFilePath);
     if (!cloudinaryResponse || cloudinaryResponse.error) {
       console.log(cloudinaryResponse.error);
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
       email,
       name,
@@ -66,11 +61,15 @@ export const register = async (req, res) => {
         public_id: cloudinaryResponse.public_id,
         url: cloudinaryResponse.url,
       },
+      creatorAgreementAccepted: role === "admin", // ✅ Mark agreement as accepted if registering as creator
     });
+
     await newUser.save();
+
     if (newUser) {
       let token = await createTokenAndSaveCookies(newUser._id, res);
-      console.log("Singup: ", token);
+      console.log("Signup: ", token);
+
       res.status(201).json({
         message: "User registered successfully",
         user: {
@@ -90,6 +89,7 @@ export const register = async (req, res) => {
     return res.status(500).json({ error: "Internal Server error" });
   }
 };
+
 
 export const login = async (req, res) => {
   const { email, password, role } = req.body;
@@ -323,7 +323,8 @@ export const becomeCreator = async (req, res) => {
       return res.status(400).json({ message: "User is already a creator." });
     }
 
-    user.role = "admin"; // Switch role from 'user' to 'admin'
+    user.role = "admin";
+    user.creatorAgreementAccepted = true; 
     await user.save();
 
     res.status(200).json({ message: "You are now a creator!", user });
@@ -332,5 +333,3 @@ export const becomeCreator = async (req, res) => {
     res.status(500).json({ message: "Something went wrong", error });
   }
 };
-
-
