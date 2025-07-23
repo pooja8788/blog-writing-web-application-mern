@@ -25,6 +25,7 @@ router.post("/toggle-favorite/:blogId", isAuthenticated, toggleFavorite);
 router.post("/send-otp", sendOtp);
 router.post("/verify-otp", verifyOtp);
 router.post("/reset-password", resetPassword);
+router.post("/become-creator", isAuthenticated, becomeCreator);
 
 
 export default router;

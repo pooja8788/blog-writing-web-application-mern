@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema({
     select: false,
     minlength: 8,
   },
+    isCreator: {
+    type: Boolean,
+    default: false,
+  },
   token: {
     type: String,
   },
