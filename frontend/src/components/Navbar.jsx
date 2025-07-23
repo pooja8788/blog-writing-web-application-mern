@@ -159,7 +159,7 @@ function Navbar() {
     if (!confirm) return;
 
     try {
-      const { data } = await axios.post(
+      const { data } = await axios.patch(
         `${BACKEND_URL}/api/users/become-creator`,
         {},
         { withCredentials: true }
@@ -198,7 +198,6 @@ function Navbar() {
 
           {/* Desktop Buttons */}
           <div className="hidden md:flex space-x-2">
-            {/* Dashboard is only for Admins */}
             {isAuthenticated && profile?.role === "admin" && (
               <Link
                 to="/dashboard"
@@ -208,7 +207,6 @@ function Navbar() {
               </Link>
             )}
 
-            {/* Only show "Become Creator" to normal users who are NOT creators */}
             {isAuthenticated && profile?.role === "user" && !profile?.isCreator && (
               <button
                 onClick={handleBecomeCreator}
