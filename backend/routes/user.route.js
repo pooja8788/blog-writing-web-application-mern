@@ -10,6 +10,7 @@ import {
   sendOtp,
   verifyOtp,
   resetPassword,
+  becomeCreator ,
 } from "../controller/user.controller.js";
 import { isAuthenticated } from "../middleware/authUser.js";
 
