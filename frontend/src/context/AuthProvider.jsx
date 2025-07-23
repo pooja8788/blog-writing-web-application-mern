@@ -201,6 +201,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types"; 
 import { BACKEND_URL } from "../utils";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
@@ -284,6 +285,32 @@ export const AuthProvider = ({ children }) => {
     return blog.likes?.includes(profile._id);
   };
 
+  const switchRole = async () => {
+  try {
+    const confirm = window.confirm(
+      "Are you sure you want to switch your role?"
+    );
+    if (!confirm) return;
+
+    const { data } = await axios.patch(
+      `${BACKEND_URL}/api/users/switch-role`,
+      {},
+      { withCredentials: true }
+    );
+
+    setProfile((prev) => ({
+      ...prev,
+      role: data.role,
+    }));
+
+    toast.success(`Role switched to ${data.role}`);
+  } catch (error) {
+    console.error("Error switching role:", error);
+    toast.error("Failed to switch role");
+  }
+};
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -294,6 +321,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated,
         toggleLike,
         isBlogLikedByUser,
+        switchRole,
       }}
     >
       {children}
