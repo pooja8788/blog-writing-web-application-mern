@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 function Blogs() {
   const { blogs } = useAuth();
 
-  console.log(blogs);
   return (
     <div>
       <div className="container mx-auto my-12 p-4">

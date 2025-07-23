@@ -292,9 +292,10 @@ const Search = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
               gap: "24px",
               padding: "1rem",
+              justifyContent: "start",
             }}
           >
             {results.length > 0 ? (
@@ -315,8 +316,9 @@ const Search = () => {
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "space-between",
-                      height: "400px", // fixed height
-                      maxHeight: "400px",
+                      height: "400px",
+                      width: "100%", // ensures it fills its grid cell
+                      maxWidth: "100%",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "scale(1.02)";
@@ -406,3 +408,4 @@ const Search = () => {
 };
 
 export default Search;
+
