@@ -246,12 +246,10 @@ function Detail() {
           )}
 
           <div className="p-6">
-            {/* Category */}
             <p className="text-blue-600 uppercase text-sm font-semibold mb-1">
               {blogs?.category}
             </p>
 
-            {/* Title */}
             <h1 className="text-3xl font-bold text-gray-900 mb-3">
               {blogs?.title}
             </h1>
