@@ -77,7 +77,7 @@ function MyBlogs() {
               </div>
             ))
           ) : (
-            <div className="flex justify-center items-center h-[60vh] w-full">
+            <div className="flex justify-center items-center h-[60vh] w-full pl-[25%]">
               <p className="text-gray-500 text-lg">
                 You have not posted any blog to see!
               </p>
