@@ -173,7 +173,8 @@ function Login() {
           },
         }
       );
-
+      
+      localStorage.setItem("jwt", data.token);
       toast.success(data.message || "User logged in successfully", {
         duration: 3000,
       });
