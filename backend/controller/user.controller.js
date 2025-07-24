@@ -138,27 +138,23 @@ export const register = async (req, res) => {
 // };
 
 export const login = async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password } = req.body;
 
   try {
     // 1. Validate input
-    if (!email || !password || !role) {
+    if (!email || !password ) {
       return res.status(400).json({ message: "Please fill required fields" });
     }
-
     // 2. Find user and include password
     const user = await User.findOne({ email }).select("+password");
-
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-
     // 3. Check password match
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-
     // 6. Create JWT token and send response
     const token = await createTokenAndSaveCookies(user._id, res);
 
