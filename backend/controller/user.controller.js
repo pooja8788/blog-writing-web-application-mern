@@ -158,10 +158,6 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-    // 5. 🔒 Email Verification Guard
-    if (!user.isVerified) {
-      return res.status(401).json({ message: "Please verify your email first." });
-    }
 
     // 6. Create JWT token and send response
     const token = await createTokenAndSaveCookies(user._id, res);
@@ -174,7 +170,6 @@ export const login = async (req, res) => {
         email: user.email,
         role: user.role,
         avatar: user.photo,
-        isVerified: user.isVerified,
       },
       token,
     });
