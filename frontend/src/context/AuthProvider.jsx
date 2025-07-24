@@ -202,7 +202,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [blogs, setBlogs] = useState([]);
   const [profile, setProfile] = useState();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   // const fetchProfile = async () => {
   //   try {
@@ -246,6 +246,7 @@ export const AuthProvider = ({ children }) => {
       setBlogs(data);
     } catch (error) {
       console.log("Error fetching blogs:", error);
+      setIsAuthenticated(false);
     }
   };
 
