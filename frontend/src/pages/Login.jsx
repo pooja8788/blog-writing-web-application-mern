@@ -294,7 +294,7 @@ function Login() {
       setEmail("");
       setPassword("");
 
-      navigateTo("/dashboard");
+      navigateTo("/");
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Login failed",
