@@ -60,7 +60,6 @@
 
 // export default App;
 
-
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import Navbar from "../src/components/Navbar";
@@ -96,10 +95,18 @@ function App() {
       {!hideNavbarFooter && <Navbar />}
 
       <Routes>
-        {/* 🔒 Protected route for Home */}
         <Route
           path="/"
           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/blogs"
+          element={isAuthenticated ? <Blogs /> : <Navigate to="/login" />}
         />
 
         {/* Public Routes */}
@@ -126,4 +133,3 @@ function App() {
 }
 
 export default App;
-
