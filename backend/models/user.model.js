@@ -42,14 +42,21 @@ const userSchema = new mongoose.Schema({
     select: false,
     minlength: 8,
   },
-    isCreator: {
+  isCreator: {
     type: Boolean,
     default: false,
   },
   creatorAgreementAccepted: {
-  type: Boolean,
-  default: false,
-},
+    type: Boolean,
+    default: false,
+  },
+  verifyToken: {
+    type: String,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
   token: {
     type: String,
   },

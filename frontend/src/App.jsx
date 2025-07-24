@@ -17,6 +17,7 @@ import Detail from "./pages/Detail.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Footer from "./components/Footer.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx"
+import VerifyOtp from "./pages/VerifyOtp.jsx";
 
 function App() {
   const location = useLocation();
@@ -47,7 +48,9 @@ function App() {
         <Route exact path="/blog/:id" element={<Detail />} />
         <Route exact path="/blog/update/:id" element={<UpdateBlog />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+
       </Routes>
       <Toaster />
       {!hideNavbarFooter && <Footer />}
