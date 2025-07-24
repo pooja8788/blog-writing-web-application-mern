@@ -84,9 +84,14 @@
 
 // export const useAuth = () => useContext(AuthContext);
 
+
+
+
+
 // import axios from "axios";
 // import { createContext, useContext, useEffect, useState } from "react";
 // import { BACKEND_URL } from "../utils";
+
 
 // export const AuthContext = createContext();
 
@@ -191,9 +196,10 @@
 
 // export const useAuth = () => useContext(AuthContext);
 
+
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"; 
 import { BACKEND_URL } from "../utils";
 import toast from "react-hot-toast";
 
@@ -202,7 +208,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [blogs, setBlogs] = useState([]);
   const [profile, setProfile] = useState();
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // const fetchProfile = async () => {
   //   try {
@@ -224,18 +230,22 @@ export const AuthProvider = ({ children }) => {
   // };
 
   const fetchProfile = async () => {
-    try {
-      const { data } = await axios.get(`${BACKEND_URL}/api/users/my-profile`, {
+  try {
+    const { data } = await axios.get(
+      `${BACKEND_URL}/api/users/my-profile`,
+      {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
-      });
-      setProfile(data.user);
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.log("Error fetching profile:", error);
-      setIsAuthenticated(false);
-    }
-  };
+      }
+    );
+    setProfile(data.user);
+    setIsAuthenticated(true);
+  } catch (error) {
+    console.log("Error fetching profile:", error);
+    setProfile(null);
+    setIsAuthenticated(false);
+  }
+};
 
   const fetchBlogs = async () => {
     try {
@@ -245,7 +255,6 @@ export const AuthProvider = ({ children }) => {
       setBlogs(data);
     } catch (error) {
       console.log("Error fetching blogs:", error);
-      setIsAuthenticated(false);
     }
   };
 
@@ -254,39 +263,40 @@ export const AuthProvider = ({ children }) => {
     fetchBlogs();
   }, []);
 
-  const toggleLike = async (blogId) => {
-    try {
-      if (!profile) {
-        alert("Please log in to like blogs.");
-        return;
-      }
-
-      // Optimistically update UI
-      setBlogs((prevBlogs) =>
-        prevBlogs.map((blog) => {
-          if (blog._id === blogId) {
-            const isLiked = blog.likes.includes(profile._id);
-            return {
-              ...blog,
-              likes: isLiked
-                ? blog.likes.filter((id) => id !== profile._id)
-                : [...blog.likes, profile._id],
-            };
-          }
-          return blog;
-        })
-      );
-
-      // Make the backend request
-      await axios.post(
-        `${BACKEND_URL}/api/blogs/${blogId}/like`,
-        {},
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.log("Error toggling like:", error);
+ const toggleLike = async (blogId) => {
+  try {
+    if (!profile) {
+      alert("Please log in to like blogs.");
+      return;
     }
-  };
+
+    // Optimistically update UI
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((blog) => {
+        if (blog._id === blogId) {
+          const isLiked = blog.likes.includes(profile._id);
+          return {
+            ...blog,
+            likes: isLiked
+              ? blog.likes.filter((id) => id !== profile._id)
+              : [...blog.likes, profile._id],
+          };
+        }
+        return blog;
+      })
+    );
+
+    // Make the backend request
+    await axios.post(
+      `${BACKEND_URL}/api/blogs/${blogId}/like`,
+      {},
+      { withCredentials: true }
+    );
+  } catch (error) {
+    console.log("Error toggling like:", error);
+  }
+};
+
 
   const isBlogLikedByUser = (blog) => {
     if (!profile) return false;
@@ -294,29 +304,30 @@ export const AuthProvider = ({ children }) => {
   };
 
   const switchRole = async () => {
-    try {
-      const confirm = window.confirm(
-        "Are you sure you want to switch your role?"
-      );
-      if (!confirm) return;
+  try {
+    const confirm = window.confirm(
+      "Are you sure you want to switch your role?"
+    );
+    if (!confirm) return;
 
-      const { data } = await axios.patch(
-        `${BACKEND_URL}/api/users/switch-role`,
-        {},
-        { withCredentials: true }
-      );
+    const { data } = await axios.patch(
+      `${BACKEND_URL}/api/users/switch-role`,
+      {},
+      { withCredentials: true }
+    );
 
-      setProfile((prev) => ({
-        ...prev,
-        role: data.role,
-      }));
+    setProfile((prev) => ({
+      ...prev,
+      role: data.role,
+    }));
 
-      toast.success(`Role switched to ${data.role}`);
-    } catch (error) {
-      console.error("Error switching role:", error);
-      toast.error("Failed to switch role");
-    }
-  };
+    toast.success(`Role switched to ${data.role}`);
+  } catch (error) {
+    console.error("Error switching role:", error);
+    toast.error("Failed to switch role");
+  }
+};
+
 
   return (
     <AuthContext.Provider
