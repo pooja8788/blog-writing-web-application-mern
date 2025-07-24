@@ -470,7 +470,7 @@ function Detail() {
             </div>
 
             {/* Description */}
-            <p className="text-lg text-gray-700 leading-8">{blogs?.about}</p>
+            <p className="text-lg text-gray-700 leading-8 whitespace-pre-line">{blogs?.about}</p>
 
             {/* Comments */}
             <div className="mt-10 border-t pt-6">
