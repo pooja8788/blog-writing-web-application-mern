@@ -93,7 +93,7 @@ function Hero() {
         className="flex overflow-x-auto space-x-4 scrollbar-hide px-10"
       >
         {blogs && blogs.length > 0 ? (
-          blogs.slice(0, 10).map((blog) => (
+          [...blogs].reverse().slice(0, 10).map((blog) => (
             <div key={blog._id} className="min-w-[280px] flex-shrink-0">
               <BlogCard blog={blog} />
             </div>

@@ -13,8 +13,8 @@ function MyBlogs() {
         const { data } = await axios.get(`${BACKEND_URL}/api/blogs/my-blog`, {
           withCredentials: true,
         });
-        console.log(data);
-        setMyBlogs(data);
+        const sortedBlogs = [...data].reverse(); 
+        setMyBlogs(sortedBlogs);
       } catch (error) {
         console.log(error);
       }

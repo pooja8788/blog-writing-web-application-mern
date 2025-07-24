@@ -12,7 +12,7 @@ function Blogs() {
         <h1 className="text-2xl font-bold mb-6">All Blogs goes here!!!</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           {blogs && blogs.length > 0 ? (
-            blogs.map((blog, index) => (
+            [...blogs].reverse().map((blog, index) => (
               <Link
                 to={`/blog/${blog._id}`}
                 key={index}
