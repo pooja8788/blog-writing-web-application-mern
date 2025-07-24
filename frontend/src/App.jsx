@@ -60,81 +60,6 @@
 
 // export default App;
 
-// // eslint-disable-next-line no-unused-vars
-// import React from "react";
-// import Navbar from "../src/components/Navbar";
-// import Home from "../src/components/Home";
-// import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-// import Blogs from "../src/pages/Blogs";
-// import Login from "../src/pages/Login";
-// import Register from "../src/pages/Register";
-// import Creators from "./pages/Creators";
-// import Dashboard from "../src/pages/Dashboard";
-// import Contact from "../src/pages/Contact";
-// import Favorites from "../src/pages/Favorites";
-// import { useAuth } from "./context/AuthProvider";
-// import { Toaster } from "react-hot-toast";
-// import UpdateBlog from "./dashboard/UpdateBlog.jsx";
-// import Detail from "./pages/Detail.jsx";
-// import NotFound from "./pages/NotFound.jsx";
-// import Footer from "./components/Footer.jsx";
-// import ForgotPassword from "./pages/ForgotPassword.jsx";
-// import VerifyOtp from "./pages/VerifyOtp.jsx";
-
-// function App() {
-//   const location = useLocation();
-//   const { isAuthenticated } = useAuth();
-
-//   // Pages where Navbar and Footer should be hidden
-//   const hideNavbarFooter = ["/dashboard", "/login", "/register"].includes(
-//     location.pathname
-//   );
-
-//   return (
-//     <div>
-//       {!hideNavbarFooter && <Navbar />}
-
-//       <Routes>
-//         <Route
-//           path="/"
-//           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
-//         />
-
-//         <Route
-//           path="/dashboard"
-//           element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
-//         />
-//         <Route
-//           path="/blogs"
-//           element={isAuthenticated ? <Blogs /> : <Navigate to="/login" />}
-//         />
-
-//         {/* Public Routes */}
-//         <Route path="/blogs" element={<Blogs />} />
-//         <Route path="/creators" element={<Creators />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/register" element={<Register />} />
-//         <Route path="/dashboard" element={<Dashboard />} />
-//         <Route path="/contact" element={<Contact />} />
-//         <Route path="/favorites" element={<Favorites />} />
-//         <Route path="/blog/:id" element={<Detail />} />
-//         <Route path="/blog/update/:id" element={<UpdateBlog />} />
-//         <Route path="/ForgotPassword" element={<ForgotPassword />} />
-//         <Route path="/verify-otp" element={<VerifyOtp />} />
-
-//         {/* 404 Not Found */}
-//         <Route path="*" element={<NotFound />} />
-//       </Routes>
-
-//       <Toaster />
-//       {!hideNavbarFooter && <Footer />}
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import Navbar from "../src/components/Navbar";
@@ -170,11 +95,11 @@ function App() {
       {!hideNavbarFooter && <Navbar />}
 
       <Routes>
-        {/* Protected Routes */}
         <Route
           path="/"
           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
         />
+
         <Route
           path="/dashboard"
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
@@ -183,21 +108,17 @@ function App() {
           path="/blogs"
           element={isAuthenticated ? <Blogs /> : <Navigate to="/login" />}
         />
-        <Route
-          path="/favorites"
-          element={isAuthenticated ? <Favorites /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/blog/update/:id"
-          element={isAuthenticated ? <UpdateBlog /> : <Navigate to="/login" />}
-        />
 
         {/* Public Routes */}
+        <Route path="/blogs" element={<Blogs />} />
         <Route path="/creators" element={<Creators />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route path="/blog/:id" element={<Detail />} />
+        <Route path="/blog/update/:id" element={<UpdateBlog />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
 
