@@ -270,7 +270,7 @@ function Register() {
         otp,
         type: "email-verification",
       });
-      toast.success(data.message);
+      toast.success(data.message || "OTP verified");
       setEmailVerified(true);
     } catch (err) {
       toast.error(err.response?.data?.message || "OTP verification failed");

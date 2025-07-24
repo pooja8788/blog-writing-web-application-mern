@@ -386,6 +386,60 @@ export const sendOtp = async (req, res) => {
 //   }
 // };
 
+// export const verifyOtp = async (req, res) => {
+//   const { email, otp, type } = req.body;
+
+//   if (!email || !otp || !type) {
+//     return res
+//       .status(400)
+//       .json({ message: "Email, OTP, and type are required" });
+//   }
+
+//   try {
+//     const otpEntry = await Otp.findOne({ email, type });
+
+//     if (!otpEntry) {
+//       return res
+//         .status(400)
+//         .json({ message: "No OTP found for this email and type" });
+//     }
+
+//     if (otpEntry.expiresAt < new Date()) {
+//       await Otp.deleteOne({ _id: otpEntry._id });
+//       return res.status(400).json({ message: "OTP has expired" });
+//     }
+
+//     if (otpEntry.otp !== otp) {
+//       return res.status(400).json({ message: "Invalid OTP" });
+//     }
+
+//     // Mark OTP as verified
+//     otpEntry.verified = true;
+//     await otpEntry.save();
+
+//     // ✅ If it's for email verification, update User model
+//     if (type === "email-verification") {
+//       const user = await User.findOneAndUpdate(
+//         { email },
+//         { $set: { isVerified: true } },
+//         { new: true }
+//       );
+
+//       if (!user) {
+//         return res.status(404).json({ message: "User not found to verify" });
+//       }
+
+//       return res.status(200).json({ message: "Email verified successfully" });
+//     }
+
+//     // Otherwise just return success for forgot-password etc.
+//     return res.status(200).json({ message: "OTP verified successfully" });
+//   } catch (error) {
+//     console.error("Verify OTP error:", error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
 export const verifyOtp = async (req, res) => {
   const { email, otp, type } = req.body;
 
@@ -413,32 +467,22 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // Mark OTP as verified
+    // ✅ Mark OTP as verified
     otpEntry.verified = true;
     await otpEntry.save();
 
-    // ✅ If it's for email verification, update User model
-    if (type === "email-verification") {
-      const user = await User.findOneAndUpdate(
-        { email },
-        { $set: { isVerified: true } },
-        { new: true }
-      );
-
-      if (!user) {
-        return res.status(404).json({ message: "User not found to verify" });
-      }
-
-      return res.status(200).json({ message: "Email verified successfully" });
-    }
-
-    // Otherwise just return success for forgot-password etc.
-    return res.status(200).json({ message: "OTP verified successfully" });
+    return res.status(200).json({
+      message:
+        type === "email-verification"
+          ? "Email OTP verified successfully"
+          : "OTP verified successfully",
+    });
   } catch (error) {
     console.error("Verify OTP error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 // 3. Reset Password
 export const resetPassword = async (req, res) => {

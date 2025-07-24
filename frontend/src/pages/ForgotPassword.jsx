@@ -169,7 +169,7 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [cooldown, setCooldown] = useState(0);
 
-  // ⏱ Cooldown timer for resend OTP
+  //  Cooldown timer for resend OTP
   useEffect(() => {
     if (cooldown <= 0) return;
     const interval = setInterval(() => {
