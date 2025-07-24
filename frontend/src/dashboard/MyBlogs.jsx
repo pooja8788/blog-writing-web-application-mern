@@ -79,7 +79,7 @@ function MyBlogs() {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500">
+            <p className="text-left  text-gray-500">
               You have not posted any blog to see!
             </p>
           )}

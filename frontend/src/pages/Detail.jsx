@@ -345,7 +345,6 @@ function Detail() {
   const { toggleLike, isBlogLikedByUser, profile } = useAuth();
   const isLiked = blogs?.likes?.includes(profile?._id);
 
-  // ✅ Set logged-in user's name
   useEffect(() => {
     if (profile?.name) {
       setUserName(profile.name);

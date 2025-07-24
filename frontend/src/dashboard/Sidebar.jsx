@@ -124,7 +124,7 @@ Sidebar.propTypes = {
 function Sidebar({ setComponent }) {
   const { profile, setIsAuthenticated } = useAuth();
   const navigateTo = useNavigate();
-  const [minimized, setMinimized] = useState(false);
+  const [minimized, setMinimized] = useState(true);
 
   const handleComponents = (value) => {
     setComponent(value);
