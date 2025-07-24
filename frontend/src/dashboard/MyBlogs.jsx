@@ -5,16 +5,14 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
 
-
 function MyBlogs() {
   const [myBlogs, setMyBlogs] = useState([]);
   useEffect(() => {
     const fetchMyBlogs = async () => {
       try {
-        const { data } = await axios.get(
-          `${BACKEND_URL}/api/blogs/my-blog`,
-          { withCredentials: true }
-        );
+        const { data } = await axios.get(`${BACKEND_URL}/api/blogs/my-blog`, {
+          withCredentials: true,
+        });
         console.log(data);
         setMyBlogs(data);
       } catch (error) {
@@ -79,9 +77,11 @@ function MyBlogs() {
               </div>
             ))
           ) : (
-            <p className="text-left  text-gray-500">
-              You have not posted any blog to see!
-            </p>
+            <div className="flex justify-center items-center h-[60vh] w-full">
+              <p className="text-gray-500 text-lg">
+                You have not posted any blog to see!
+              </p>
+            </div>
           )}
         </div>
       </div>
