@@ -9,7 +9,6 @@ export const addComment = async (req, res) => {
   if (!user || !text) {
     return res.status(400).json({ message: "User and text are required." });
   }
-
   try {
     const blog = await Blog.findById(id);
     if (!blog) return res.status(404).json({ message: "Blog not found" });
@@ -25,17 +24,15 @@ export const addComment = async (req, res) => {
   }
 };
 
+
 //Get comments
 export const getComments = async (req, res) => {
   try {
     const id = req.params.id;
-
     const blog = await Blog.findById(id).populate("comments");
-
     if (!blog) {
       return res.status(404).json({ message: "Blog not found" });
     }
-
     res.status(200).json(blog.comments);
   } catch (error) {
     console.error("Fetch comments error:", error.message);
