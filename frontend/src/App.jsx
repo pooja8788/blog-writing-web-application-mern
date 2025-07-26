@@ -84,12 +84,12 @@ import VerifyOtp from "./pages/VerifyOtp.jsx";
 
 function App() {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  useAuth();
 
   const hideNavbarFooter = ["/dashboard", "/login", "/register"].includes(
     location.pathname
   );
-
+  let token = localStorage.getItem("jwt");
   return (
     <div>
       {!hideNavbarFooter && <Navbar />}
@@ -97,7 +97,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+          element={token ?<Home /> : <Navigate to="/login" />}
         />
 
         {/* Public Routes */}
