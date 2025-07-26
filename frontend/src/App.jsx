@@ -86,7 +86,6 @@ function App() {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
 
-  // Pages where Navbar and Footer should be hidden
   const hideNavbarFooter = ["/dashboard", "/login", "/register"].includes(
     location.pathname
   );
@@ -96,7 +95,6 @@ function App() {
       {!hideNavbarFooter && <Navbar />}
 
       <Routes>
-        {/* 🔒 Protected route for Home */}
         <Route
           path="/"
           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
@@ -114,8 +112,6 @@ function App() {
         <Route path="/blog/update/:id" element={<UpdateBlog />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
-
-        {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
 

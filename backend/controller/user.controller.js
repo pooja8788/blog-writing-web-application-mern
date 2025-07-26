@@ -406,7 +406,6 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // ✅ Mark OTP as verified
     otpEntry.verified = true;
     await otpEntry.save();
 

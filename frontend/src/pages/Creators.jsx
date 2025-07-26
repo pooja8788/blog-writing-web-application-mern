@@ -5,7 +5,6 @@ import { BACKEND_URL } from "../utils";
 
 function Creators() {
   const [creators, setCreators] = useState([]);
-  console.log(creators);
   useEffect(() => {
     const fetchCreators = async () => {
       try {
