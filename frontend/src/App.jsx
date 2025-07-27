@@ -90,6 +90,7 @@ function App() {
     location.pathname
   );
 
+  
   return (
     <div>
       {!hideNavbarFooter && <Navbar />}
