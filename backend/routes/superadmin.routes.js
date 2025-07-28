@@ -7,7 +7,7 @@ import {
   getAllPosts,
   deletePost,
   updateUserRole,
-} from "../controllers/superadmin.controller.js";
+} from "../controller/superadmin.controller.js";
 
 const router = express.Router();
 
