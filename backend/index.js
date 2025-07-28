@@ -6,7 +6,9 @@ import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
 import blogRoute from "./routes/blog.route.js";
+import superAdminRoutes from "./routes/superadmin.routes.js"
 import cors from "cors";
+
 const app = express();
 dotenv.config();
 
@@ -56,6 +58,7 @@ connectToDB();
 // defining routes
 app.use("/api/users", userRoute);
 app.use("/api/blogs", blogRoute);
+app.use("/api/superadmin", superAdminRoutes);
 // Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,

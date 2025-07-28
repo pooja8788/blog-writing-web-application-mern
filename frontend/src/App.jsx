@@ -60,7 +60,6 @@
 
 // export default App;
 
-
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import Navbar from "../src/components/Navbar";
@@ -81,6 +80,9 @@ import NotFound from "./pages/NotFound.jsx";
 import Footer from "./components/Footer.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import ManageUsers from "./pages/ManageUsers";
+import ManagePosts from "./pages/ManagePosts";
 
 function App() {
   const location = useLocation();
@@ -90,7 +92,6 @@ function App() {
     location.pathname
   );
 
-  
   return (
     <div>
       {!hideNavbarFooter && <Navbar />}
@@ -113,6 +114,9 @@ function App() {
         <Route path="/blog/update/:id" element={<UpdateBlog />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/superadmin" element={<SuperAdminDashboard />} />
+        <Route path="/superadmin/users" element={<ManageUsers />} />
+        <Route path="/superadmin/posts" element={<ManagePosts />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
@@ -123,4 +127,3 @@ function App() {
 }
 
 export default App;
-
