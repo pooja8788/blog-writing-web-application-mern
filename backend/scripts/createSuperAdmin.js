@@ -22,6 +22,11 @@ const createSuperAdmin = async () => {
     phone: process.env.SUPERADMIN_PHONE,
     password: hashedPassword,
     role: "superadmin",
+    education: "Admin of system", // Required field
+    photo: {
+      public_id: "default_superadmin_id",
+      url: "https://res.cloudinary.com/demo/image/upload/v1690000000/default-user.jpg", // Or any default image URL
+    },
   });
 
   console.log("✅ SuperAdmin created:", superAdmin.email);
