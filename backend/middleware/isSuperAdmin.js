@@ -2,7 +2,7 @@
 
 export const isSuperAdmin = (req, res, next) => {
   try {
-    if (req.user.role !== "superadmin") {
+    if (!req.user || req.user.role !== "superadmin") {
       return res.status(403).json({
         error: "Access denied. Only SuperAdmin can access this resource.",
       });

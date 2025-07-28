@@ -1,27 +1,22 @@
 import express from "express";
-import { isAuthenticated } from "../middlewares/auth.js";
+import { isAuthenticated } from "../middlewares/authUsers.js"; // ✅ use existing file
 import { isSuperAdmin } from "../middlewares/isSuperAdmin.js";
 import {
   getAllUsers,
-  updateUserRole,
   deleteUser,
   getAllPosts,
-  deletePost
-} from "../controllers/superAdmin.controller.js";
+  deletePost,
+  updateUserRole,
+} from "../controllers/superadmin.controller.js";
 
 const router = express.Router();
 
-// Protect all routes
-router.use(isAuthenticated);
-router.use(isSuperAdmin);
+router.use(isAuthenticated, isSuperAdmin);
 
-// User Management
-router.get("/users", getAllUsers);
-router.patch("/users/:id/role", updateUserRole);
-router.delete("/users/:id", deleteUser);
-
-// Post Management
-router.get("/posts", getAllPosts);
-router.delete("/posts/:id", deletePost);
+router.get("/users", isAuthenticated, isSuperAdmin, getAllUsers);
+router.delete("/users/:id", isAuthenticated, isSuperAdmin, deleteUser);
+router.get("/posts", isAuthenticated, isSuperAdmin, getAllPosts);
+router.delete("/posts/:id", isAuthenticated, isSuperAdmin, deletePost);
+router.patch("/users/:id/role", isAuthenticated, isSuperAdmin, updateUserRole);
 
 export default router;

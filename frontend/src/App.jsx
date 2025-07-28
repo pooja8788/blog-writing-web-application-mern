@@ -80,10 +80,9 @@ import NotFound from "./pages/NotFound.jsx";
 import Footer from "./components/Footer.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
-import SuperAdminDashboard from "./pages/SuperAdminDashboard";
-import ManageUsers from "./pages/ManageUsers";
-import ManagePosts from "./pages/ManagePosts";
-
+import SuperAdminDashboard from "./pages/superadmin/SuperAdminDashboard";
+import AllUsers from "./pages/superadmin/AllUsers";
+import AllPosts from "./pages/superadmin/AllPosts";
 function App() {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
@@ -115,8 +114,8 @@ function App() {
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/superadmin" element={<SuperAdminDashboard />} />
-        <Route path="/superadmin/users" element={<ManageUsers />} />
-        <Route path="/superadmin/posts" element={<ManagePosts />} />
+        <Route path="/superadmin/users" element={<AllUsers />} />
+        <Route path="/superadmin/posts" element={<AllPosts />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 

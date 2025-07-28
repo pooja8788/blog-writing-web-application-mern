@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
 import blogRoute from "./routes/blog.route.js";
 import superAdminRoutes from "./routes/superadmin.routes.js"
+
 import cors from "cors";
 
 const app = express();

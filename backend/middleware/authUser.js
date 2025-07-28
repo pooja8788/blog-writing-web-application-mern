@@ -32,3 +32,14 @@ export const isAdmin = (...roles) => {
     next();
   };
 };
+
+
+// Authorization for SuperAdmin
+export const isSuperAdmin = (req, res, next) => {
+  if (req.user.role !== "superadmin") {
+    return res
+      .status(403)
+      .json({ error: "Only SuperAdmin can access this route" });
+  }
+  next();
+};
