@@ -1,6 +1,6 @@
 import express from "express";
-import { isAuthenticated } from "../middlewares/authUser.js"; // ✅ use existing file
-import { isSuperAdmin } from "../middlewares/isSuperAdmin.js";
+import { isAuthenticated } from "../middleware/authUser.js"; // ✅ use existing file
+import { isSuperAdmin } from "../middleware/isSuperAdmin.js";
 import {
   getAllUsers,
   deleteUser,
