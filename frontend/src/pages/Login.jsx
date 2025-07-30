@@ -1,4 +1,3 @@
-
 // /* eslint-disable no-unused-vars */
 // import axios from "axios";
 // import React, { useState } from "react";
@@ -139,11 +138,6 @@
 
 // export default Login;
 
-
-
-
-
-
 // /* eslint-disable no-unused-vars */
 // import axios from "axios";
 // import React, { useState } from "react";
@@ -173,7 +167,7 @@
 //           },
 //         }
 //       );
-      
+
 //       localStorage.setItem("jwt", data.token);
 //       toast.success(data.message || "User logged in successfully", {
 //         duration: 3000,
@@ -250,8 +244,6 @@
 
 // export default Login;
 
-
-
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import React, { useState } from "react";
@@ -275,7 +267,7 @@ function Login() {
         `${BACKEND_URL}/api/users/login`,
         { email, password },
         {
-          withCredentials: true, // 🔐 very important for cookies
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
@@ -286,20 +278,22 @@ function Login() {
         duration: 3000,
       });
 
-      // ✅ Use auth context state
+      // Use auth context state
       setProfile(data.user);
       setIsAuthenticated(true);
 
       // Clear form
       setEmail("");
       setPassword("");
-
-      navigateTo("/");
+      if (data.user.role === "superadmin") {
+        navigateTo("/superadmin");
+      } else {
+        navigateTo("/");
+      }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Login failed",
-        { duration: 3000 }
-      );
+      toast.error(error.response?.data?.message || "Login failed", {
+        duration: 3000,
+      });
     }
   };
 

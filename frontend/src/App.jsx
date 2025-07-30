@@ -100,6 +100,7 @@ function App() {
           path="/"
           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
         />
+        
 
         {/* Public Routes */}
         <Route path="/blogs" element={<Blogs />} />
