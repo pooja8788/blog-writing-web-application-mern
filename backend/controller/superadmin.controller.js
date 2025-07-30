@@ -34,7 +34,7 @@ export const deleteUser = async (req, res) => {
 
 // 4. Get all posts
 export const getAllPosts = async (req, res) => {
-  const posts = await Blog.find().populate("admin", "name email");
+  const posts = await Blog.find().populate("createdBy", "name email photo");
   res.status(200).json({ posts });
 };
 
