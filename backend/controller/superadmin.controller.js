@@ -33,9 +33,36 @@ export const deleteUser = async (req, res) => {
 };
 
 // 4. Get all posts
+// controller/superadmin.controller.js
 export const getAllPosts = async (req, res) => {
-  const posts = await Blog.find().populate("createdBy", "name email photo");
-  res.status(200).json({ posts });
+  const { search = "", category = "", sort = "desc", limit = 10, page = 1 } = req.query;
+
+  const query = {};
+
+  if (search) {
+    query.title = { $regex: search, $options: "i" };
+  }
+
+  if (category) {
+    query.category = category;
+  }
+
+  const skip = (page - 1) * limit;
+
+  const posts = await Blog.find(query)
+    .populate("createdBy", "name photo")
+    .sort({ createdAt: sort === "asc" ? 1 : -1 })
+    .skip(skip)
+    .limit(Number(limit));
+
+  const total = await Blog.countDocuments(query);
+
+  res.status(200).json({
+    posts,
+    total,
+    currentPage: Number(page),
+    totalPages: Math.ceil(total / limit),
+  });
 };
 
 // 5. Delete a post
