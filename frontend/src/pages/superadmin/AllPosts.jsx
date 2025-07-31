@@ -161,7 +161,7 @@ const AllPosts = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${BACKEND_URL}/api/superadmin/single-blog/${id}`, {
+      await axios.delete(`${BACKEND_URL}/api/superadmin/posts/${id}`, {
         withCredentials: true,
       });
       toast.success("Post deleted");

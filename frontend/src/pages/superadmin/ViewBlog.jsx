@@ -11,7 +11,7 @@ const ViewBlog = () => {
 
   const fetchBlog = async () => {
     try {
-      const { data } = await axios.get(`${BACKEND_URL}/api/superadmin/single-blog/${id}`, {
+      const { data } = await axios.get(`${BACKEND_URL}/api/superadmin//single-blog/${id}`, {
         withCredentials: true,
       });
       setBlog(data.blog);
