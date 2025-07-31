@@ -45,7 +45,6 @@
 
 // // export default AllPosts;
 
-
 // // src/pages/superadmin/AllPosts.jsx
 // import { useEffect, useState } from "react";
 // import axios from "axios";
@@ -131,7 +130,6 @@
 // };
 
 // export default AllPosts;
-
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -221,7 +219,9 @@ const AllPosts = () => {
               className="w-full h-40 object-cover rounded mb-2"
             />
             <h3 className="text-lg font-semibold">{post.title}</h3>
-            <p className="text-sm text-gray-600">{post.about.slice(0, 80)}...</p>
+            <p className="text-sm text-gray-600">
+              {post.about.slice(0, 80)}...
+            </p>
             <div className="flex items-center mt-2 space-x-2">
               {post.createdBy?.photo?.url && (
                 <img
@@ -230,17 +230,27 @@ const AllPosts = () => {
                   className="w-7 h-7 rounded-full"
                 />
               )}
-              <span className="text-sm">{post.createdBy?.name || "Unknown"}</span>
+              <span className="text-sm">
+                {post.createdBy?.name || "Unknown"}
+              </span>
             </div>
             <p className="text-xs text-gray-400 mt-1">
               {new Date(post.createdAt).toLocaleDateString()} | 👁 {post.views}
             </p>
-            <button
-              onClick={() => handleDelete(post._id)}
-              className="mt-2 bg-red-500 text-white px-3 py-1 text-sm rounded"
-            >
-              Delete
-            </button>
+            <div className="flex gap-2 mt-2">
+              <a
+                href={`/superadmin/view-blog/${post._id}`}
+                className="bg-blue-500 text-white px-3 py-1 text-sm rounded"
+              >
+                View
+              </a>
+              <button
+                onClick={() => handleDelete(post._id)}
+                className="bg-red-500 text-white px-3 py-1 text-sm rounded"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -254,7 +264,9 @@ const AllPosts = () => {
         >
           Prev
         </button>
-        <span className="text-sm">Page {page} of {totalPages}</span>
+        <span className="text-sm">
+          Page {page} of {totalPages}
+        </span>
         <button
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={page === totalPages}

@@ -83,6 +83,8 @@ import VerifyOtp from "./pages/VerifyOtp.jsx";
 import SuperAdminDashboard from "./pages/superadmin/SuperAdminDashboard";
 import AllUsers from "./pages/superadmin/AllUsers";
 import AllPosts from "./pages/superadmin/AllPosts";
+import ViewBlog from "./pages/superadmin/ViewBlog";
+
 function App() {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
@@ -117,6 +119,8 @@ function App() {
         <Route path="/superadmin" element={<SuperAdminDashboard />} />
         <Route path="/superadmin/users" element={<AllUsers />} />
         <Route path="/superadmin/posts" element={<AllPosts />} />
+        <Route path="/superadmin/view-blog/:id" element={<ViewBlog />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
 
