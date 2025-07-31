@@ -7,6 +7,7 @@ import {
   getAllPosts,
   deletePost,
   updateUserRole,
+  getSingleBlog,
 } from "../controller/superadmin.controller.js";
 
 const router = express.Router();
@@ -18,5 +19,7 @@ router.delete("/users/:id", isAuthenticated, isSuperAdmin, deleteUser);
 router.get("/posts", isAuthenticated, isSuperAdmin, getAllPosts);
 router.delete("/posts/:id", isAuthenticated, isSuperAdmin, deletePost);
 router.patch("/users/:id/role", isAuthenticated, isSuperAdmin, updateUserRole);
+router.get("/single-blog/:id", isAuthenticated, getSingleBlog);
+
 
 export default router;
