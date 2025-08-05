@@ -84,6 +84,7 @@ import SuperAdminDashboard from "./pages/superadmin/SuperAdminDashboard";
 import AllUsers from "./pages/superadmin/AllUsers";
 import AllPosts from "./pages/superadmin/AllPosts";
 import ViewBlog from "./pages/superadmin/ViewBlog";
+import SuperAdminCategories from "./pages/superadmin/SuperAdminCategories.jsx"
 
 function App() {
   const location = useLocation();
@@ -120,6 +121,8 @@ function App() {
         <Route path="/superadmin/users" element={<AllUsers />} />
         <Route path="/superadmin/posts" element={<AllPosts />} />
         <Route path="/superadmin/view-blog/:id" element={<ViewBlog />} />
+        <Route path="/superadmin/categories" element={<SuperAdminCategories />} />
+
 
         <Route path="*" element={<NotFound />} />
       </Routes>

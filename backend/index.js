@@ -43,7 +43,6 @@ const connectToDB = async () => {
     });
     console.log("Connected to MongoDB");
   } catch (error) {
-    console.error("MongoDB connection error:", error.message);
   }
 };
 
@@ -60,6 +59,8 @@ connectToDB();
 app.use("/api/users", userRoute);
 app.use("/api/blogs", blogRoute);
 app.use("/api/superadmin", superAdminRoutes);
+app.use('/api/categories', categoryRoutes);
+
 // Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
