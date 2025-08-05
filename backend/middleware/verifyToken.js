@@ -3,6 +3,7 @@ import { User } from '../models/user.model.js';
 
 const verifyToken = async (req, res, next) => {
   const token = req.cookies.jwt; // ✅ Correct cookie name
+  console.log("🍪 JWT Cookie:", token);
 
   if (!token) {
     return res.status(401).json({ message: 'No token provided' });
