@@ -6,8 +6,9 @@ import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
 import blogRoute from "./routes/blog.route.js";
-import categoryRoutes from './routes/categoryRoutes.js';
 import superAdminRoutes from "./routes/superadmin.routes.js"
+import categoryRoutes from "./routes/categoryRoutes.js"; 
+
 
 import cors from "cors";
 
