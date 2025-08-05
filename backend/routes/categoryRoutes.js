@@ -1,19 +1,12 @@
-const express = require('express');
+import express from 'express';
+import { getCategories, addCategory, deleteCategory } from '../controllers/categoryController.js';
+import verifyToken from '../middleware/verifyToken.js';
+import isSuperAdmin from '../middleware/isSuperAdmin.js';
+
 const router = express.Router();
-const {
-  getCategories,
-  addCategory,
-  deleteCategory
-} = require('../controllers/categoryController');
 
-
-const verifyToken = require('../middleware/verifyToken');
-const isSuperAdmin = require('../middleware/isSuperAdmin');
-
-router.get('/', getCategories); // public or optional auth
-
-// Protect these routes
+router.get('/', getCategories);
 router.post('/', verifyToken, isSuperAdmin, addCategory);
 router.delete('/:id', verifyToken, isSuperAdmin, deleteCategory);
 
-module.exports = router;
+export default router;

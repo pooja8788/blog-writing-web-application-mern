@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 const verifyToken = async (req, res, next) => {
   const token = req.cookies.token; // ✅ grab token from cookies
@@ -13,11 +13,11 @@ const verifyToken = async (req, res, next) => {
     const user = await User.findById(decoded.id).select('-password');
     if (!user) return res.status(401).json({ message: 'User not found' });
 
-    req.user = user; // ✅ so isSuperAdmin can check this
+    req.user = user; // ✅ used by isSuperAdmin middleware
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Invalid or expired token' });
   }
 };
 
-module.exports = verifyToken;
+export default verifyToken;
