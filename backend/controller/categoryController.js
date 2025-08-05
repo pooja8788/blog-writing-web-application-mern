@@ -1,7 +1,7 @@
-const Category = require('../models/Category');
+import Category from '../models/Category.js';
 
 // @desc Get all categories
-exports.getCategories = async (req, res) => {
+export const getCategories = async (req, res) => {
   try {
     const categories = await Category.find().sort({ createdAt: -1 });
     res.json(categories);
@@ -11,7 +11,7 @@ exports.getCategories = async (req, res) => {
 };
 
 // @desc Add new category
-exports.addCategory = async (req, res) => {
+export const addCategory = async (req, res) => {
   const { name } = req.body;
 
   if (!name) return res.status(400).json({ message: 'Category name is required' });
@@ -30,7 +30,7 @@ exports.addCategory = async (req, res) => {
 };
 
 // @desc Delete category
-exports.deleteCategory = async (req, res) => {
+export const deleteCategory = async (req, res) => {
   const { id } = req.params;
 
   try {

@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import User from '../models/user.model.js';
 
 const verifyToken = async (req, res, next) => {
-  const token = req.cookies.token; // ✅ grab token from cookies
+  const token = req.cookies.token; 
 
   if (!token) {
     return res.status(401).json({ message: 'No token provided' });
