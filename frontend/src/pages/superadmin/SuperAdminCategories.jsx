@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { BACKEND_URL } from "../../utils";
+
 
 const SuperAdminCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -8,7 +10,7 @@ const SuperAdminCategories = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("/api/categories", { withCredentials: true });
+      const res = await axios.get(`${BACKEND_URL}/api/categories`, { withCredentials: true });
       console.log("📦 Category API response:", res.data);
       setCategories(res.data);
     } catch (err) {
@@ -22,7 +24,7 @@ const SuperAdminCategories = () => {
     try {
       setLoading(true);
       await axios.post(
-        "/api/categories",
+        `${BACKEND_URL}/api/categories`,
         { name: newCategory },
         { withCredentials: true }
       );
@@ -40,7 +42,7 @@ const SuperAdminCategories = () => {
       return;
 
     try {
-      await axios.delete(`/api/categories/${id}`, {
+      await axios.delete(`${BACKEND_URL}/api/categories/${id}`, {
         withCredentials: true,
       });
       fetchCategories();
