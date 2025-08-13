@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model.js';
 
 const verifyToken = async (req, res, next) => {
-  const token = req.cookies.jwt; // ✅ Correct cookie name
+  const token = req.cookies.jwt; 
   console.log("🍪 JWT Cookie:", token);
 
   if (!token) {
@@ -10,8 +10,8 @@ const verifyToken = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select('-password'); // ✅ Correct key from token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user = await User.findById(decoded.userId).select('-password'); 
     if (!user) return res.status(401).json({ message: 'User not found' });
 
     req.user = user;
