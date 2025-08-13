@@ -143,6 +143,7 @@ const AllPosts = () => {
   const [sort, setSort] = useState("desc");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+   const [categories, setCategories] = useState([]); 
 
   const fetchPosts = async () => {
     try {
@@ -172,8 +173,21 @@ const AllPosts = () => {
   };
 
   useEffect(() => {
-    fetchPosts();
-  }, [search, category, sort, page]);
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
+          withCredentials: true,
+        });
+        setCategories(data); 
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+        toast.error("Unable to load categories");
+      }
+    };
+
+    fetchCategories();
+  }, [search, category, sort, page]); 
+
 
   return (
     <div className="p-8">
@@ -189,16 +203,18 @@ const AllPosts = () => {
           className="border px-3 py-1 rounded"
         />
         <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border px-2 py-1 rounded"
-        >
-          <option value="">All Categories</option>
-          <option value="Health">Health</option>
-          <option value="Coding">Coding</option>
-          <option value="Business">Business</option>
-          <option value="Devotional">Devotional</option>
-        </select>
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none"
+              required
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}

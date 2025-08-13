@@ -90,7 +90,9 @@ function App() {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
 
-  const hideNavbarFooter = ["/dashboard", "/login", "/register", "/superadmin", "/superadmin/categories","/superadmin/users","/superadmin/posts","/superadmin/view-blog/:id"].includes(
+  const hideNavbarFooter = ["/dashboard", "/login", "/register", 
+    "/superadmin", "/superadmin/categories","/superadmin/users","/superadmin/posts",
+    "/superadmin/view-blog/:id"].includes(
     location.pathname
   );
 
