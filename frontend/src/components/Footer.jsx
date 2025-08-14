@@ -43,8 +43,8 @@ import { FaLinkedin } from "react-icons/fa";
 const Footer = () => {
   return (
     <>
-      <footer className="bg-blue-700 py-1">
-        <div className="bg-blue-700 py-4">
+      <footer className="bg-gray-600 py-1">
+        <div className="bg-gray-600 py-4">
         <div className="container mx-auto flex flex-col items-center space-y-4">
           <div className="text-xl font-semibold">
             Swar<span className="text-blue-500 font-bold">Lekhan</span>
