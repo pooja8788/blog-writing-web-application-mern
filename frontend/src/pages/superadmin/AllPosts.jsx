@@ -410,7 +410,7 @@ const AllPosts = () => {
             </p>
             <div className="flex gap-2 mt-2">
               <Link
-                to={`${BACKEND_URL}/superadmin/view-blog/${post._id}`}
+                to={`/superadmin/view-blog/${post._id}`}
                 className="bg-blue-500 text-white px-3 py-1 text-sm rounded"
               >
                 View
