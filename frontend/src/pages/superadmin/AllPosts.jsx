@@ -281,11 +281,11 @@
 
 // export default AllPosts;
 
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../utils";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -406,15 +406,15 @@ const AllPosts = () => {
               </span>
             </div>
             <p className="text-xs text-gray-400 mt-1">
-              {new Date(post.createdAt).toLocaleDateString()} 
+              {new Date(post.createdAt).toLocaleDateString()}
             </p>
             <div className="flex gap-2 mt-2">
-              <a
-                href={`${BACKEND_URL}/api/superadmin//single-blog/${post._id}`}
+              <Link
+                to={`/superadmin/view-blog/${post._id}`}
                 className="bg-blue-500 text-white px-3 py-1 text-sm rounded"
               >
                 View
-              </a>
+              </Link>
               <button
                 onClick={() => handleDelete(post._id)}
                 className="bg-red-500 text-white px-3 py-1 text-sm rounded"
