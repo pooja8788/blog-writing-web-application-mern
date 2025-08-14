@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 // import axios from "axios";
 // // eslint-disable-next-line no-unused-vars
 // import React, { useState } from "react";
@@ -25,7 +26,7 @@
 
 //   const handleCreateBlog = async (e) => {
 //     e.preventDefault();
-//      if (loading) return; 
+//      if (loading) return;
 //     setLoading(true);
 //     const formData = new FormData();
 //     formData.append("title", title);
@@ -155,7 +156,7 @@
 //         const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
 //           withCredentials: true,
 //         });
-//         setCategories(data); 
+//         setCategories(data);
 //       } catch (error) {
 //         console.error("Failed to fetch categories", error);
 //         toast.error("Unable to load categories");
@@ -295,11 +296,29 @@
 
 // export default CreateBlog;
 
-
 import axios from "axios";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { BACKEND_URL } from "../utils";
+const fontSizeArr = [
+  "8px",
+  "10px",
+  "12px",
+  "14px",
+  "18px",
+  "24px",
+  "32px",
+  "48px",
+  "60px",
+];
+const fontArr = [
+  "Arial",
+  "Calibri",
+  "Times New Roman",
+  "Courier New",
+  "Verdana",
+  "Georgia",
+];
 
 function CreateBlog() {
   const [loading, setLoading] = useState(false);
@@ -309,6 +328,14 @@ function CreateBlog() {
   const [blogImage, setBlogImage] = useState("");
   const [blogImagePreview, setBlogImagePreview] = useState("");
   const [categories, setCategories] = useState([]);
+  const toolbarOptions = [
+    [{ font: fontArr }],
+    [{ size: fontSizeArr }],
+    ["bold", "italic", "underline"],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["clean"],
+  ];
 
   // Word count state
   const [wordCount, setWordCount] = useState(0);
@@ -385,10 +412,7 @@ function CreateBlog() {
 
   // Validation check
   const isFormValid =
-    category &&
-    title.trim() !== "" &&
-    blogImage &&
-    wordCount >= 200;
+    category && title.trim() !== "" && blogImage && wordCount >= 200;
 
   return (
     <div className="min-h-screen py-10">
@@ -445,6 +469,13 @@ function CreateBlog() {
           {/* About */}
           <div className="space-y-2">
             <label className="block text-lg">About</label>
+            <ReactQuill
+              theme="snow"
+              value={about}
+              onChange={setAbout}
+              modules={{ toolbar: toolbarOptions }}
+              className="bg-white"
+            />
             <textarea
               rows="5"
               placeholder="minimum 200 words required"
@@ -452,7 +483,11 @@ function CreateBlog() {
               onChange={handleAboutChange}
               className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none"
             />
-            <p className={`text-sm ${wordCount < 200 ? "text-red-500" : "text-green-600"}`}>
+            <p
+              className={`text-sm ${
+                wordCount < 200 ? "text-red-500" : "text-green-600"
+              }`}
+            >
               Word count: {wordCount} / 200
             </p>
           </div>
