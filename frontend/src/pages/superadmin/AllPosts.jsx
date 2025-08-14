@@ -289,7 +289,7 @@ import { Link } from "react-router-dom";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]); // ✅ new state
+  const [categories, setCategories] = useState([]); 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("desc");
@@ -311,7 +311,7 @@ const AllPosts = () => {
     }
   };
 
-  // ✅ Fetch blog categories dynamically
+  //  Fetch blog categories dynamically
   const fetchCategories = async () => {
     try {
       const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
@@ -342,7 +342,7 @@ const AllPosts = () => {
   }, [search, category, sort, page]);
 
   useEffect(() => {
-    fetchCategories(); // ✅ load categories on mount
+    fetchCategories(); //  load categories on mount
   }, []);
 
   return (
@@ -410,7 +410,7 @@ const AllPosts = () => {
             </p>
             <div className="flex gap-2 mt-2">
               <Link
-                to={`/superadmin/view-blog/${post._id}`}
+                to={`${BACKEND_URL}/superadmin/view-blog/${post._id}`}
                 className="bg-blue-500 text-white px-3 py-1 text-sm rounded"
               >
                 View
