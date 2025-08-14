@@ -92,7 +92,7 @@ function App() {
 
   const hideNavbarFooter = ["/dashboard", "/login", "/register", 
     "/superadmin", "/superadmin/categories","/superadmin/users","/superadmin/posts",
-    "/superadmin/view-blog/:id"].includes(
+    "/superadmin/view-blog/:id","/superadmin/view-blog/:id"].includes(
     location.pathname
   );
 
