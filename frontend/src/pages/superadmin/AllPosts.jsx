@@ -456,7 +456,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { BACKEND_URL } from "../utils";
+import { BACKEND_URL } from "../../utils";
 import toast from "react-hot-toast";
 
 const Search = () => {
