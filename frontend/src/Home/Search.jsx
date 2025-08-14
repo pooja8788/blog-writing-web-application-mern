@@ -486,12 +486,7 @@ const Search = () => {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          style={{
-            padding: "0.75rem",
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-            fontSize: "1rem",
-          }}
+          className="border px-2 py-1 rounded"
         >
           <option value="">All Categories</option>
           {categories.map((cat) => (

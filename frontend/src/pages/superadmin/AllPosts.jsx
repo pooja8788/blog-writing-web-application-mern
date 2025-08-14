@@ -281,37 +281,192 @@
 
 // export default AllPosts;
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { BACKEND_URL } from "../../utils";
+// import toast from "react-hot-toast";
+// import { Link } from "react-router-dom";
+
+// const AllPosts = () => {
+//   const [posts, setPosts] = useState([]);
+//   const [categories, setCategories] = useState([]); 
+//   const [search, setSearch] = useState("");
+//   const [category, setCategory] = useState("");
+//   const [sort, setSort] = useState("desc");
+//   const [page, setPage] = useState(1);
+//   const [totalPages, setTotalPages] = useState(1);
+
+//   // Fetch blog posts
+//   const fetchPosts = async () => {
+//     try {
+//       const res = await axios.get(
+//         `${BACKEND_URL}/api/superadmin/posts?search=${search}&category=${category}&sort=${sort}&page=${page}&limit=6`,
+//         { withCredentials: true }
+//       );
+//       setPosts(res.data.posts);
+//       setTotalPages(res.data.totalPages);
+//     } catch (error) {
+//       toast.error("Failed to fetch posts");
+//       console.log(error);
+//     }
+//   };
+
+//   //  Fetch blog categories dynamically
+//   const fetchCategories = async () => {
+//     try {
+//       const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
+//         withCredentials: true,
+//       });
+//       setCategories(data);
+//     } catch (error) {
+//       console.error("Failed to fetch categories", error);
+//       toast.error("Unable to load categories");
+//     }
+//   };
+
+//   const handleDelete = async (id) => {
+//     try {
+//       await axios.delete(`${BACKEND_URL}/api/superadmin/posts/${id}`, {
+//         withCredentials: true,
+//       });
+//       toast.success("Post deleted");
+//       fetchPosts();
+//     } catch (error) {
+//       toast.error("Failed to delete post", error);
+//     }
+//   };
+
+//   // Fetch posts + categories on load and when filters change
+//   useEffect(() => {
+//     fetchPosts();
+//   }, [search, category, sort, page]);
+
+//   useEffect(() => {
+//     fetchCategories(); //  load categories on mount
+//   }, []);
+
+//   return (
+//     <div className="p-8">
+//       <h2 className="text-2xl font-bold mb-4">📝 All Blog Posts</h2>
+
+//       {/* Filters */}
+//       <div className="mb-4 flex flex-wrap gap-4 items-center">
+//         <input
+//           type="text"
+//           placeholder="Search by title..."
+//           value={search}
+//           onChange={(e) => setSearch(e.target.value)}
+//           className="border px-3 py-1 rounded"
+//         />
+//         <select
+//           value={category}
+//           onChange={(e) => setCategory(e.target.value)}
+//           className="border px-2 py-1 rounded"
+//         >
+//           <option value="">All Categories</option>
+//           {categories.map((cat) => (
+//             <option key={cat._id} value={cat.name}>
+//               {cat.name}
+//             </option>
+//           ))}
+//         </select>
+//         <select
+//           value={sort}
+//           onChange={(e) => setSort(e.target.value)}
+//           className="border px-2 py-1 rounded"
+//         >
+//           <option value="desc">Newest First</option>
+//           <option value="asc">Oldest First</option>
+//         </select>
+//       </div>
+
+//       {/* Posts List */}
+//       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+//         {posts.map((post) => (
+//           <div key={post._id} className="border p-4 rounded shadow bg-white">
+//             <img
+//               src={post.blogImage.url}
+//               alt={post.title}
+//               className="w-full h-40 object-cover rounded mb-2"
+//             />
+//             <h3 className="text-lg font-semibold">{post.title}</h3>
+//             <p className="text-sm text-gray-600">
+//               {post.about.slice(0, 80)}...
+//             </p>
+//             <div className="flex items-center mt-2 space-x-2">
+//               {post.createdBy?.photo?.url && (
+//                 <img
+//                   src={post.createdBy.photo.url}
+//                   alt="author"
+//                   className="w-7 h-7 rounded-full"
+//                 />
+//               )}
+//               <span className="text-sm">
+//                 {post.createdBy?.name || "Unknown"}
+//               </span>
+//             </div>
+//             <p className="text-xs text-gray-400 mt-1">
+//               {new Date(post.createdAt).toLocaleDateString()}
+//             </p>
+//             <div className="flex gap-2 mt-2">
+//               <Link
+//                 to={`${BACKEND_URL}/superadmin/view-blog/${post._id}`}
+//                 className="bg-blue-500 text-white px-3 py-1 text-sm rounded"
+//               >
+//                 View
+//               </Link>
+//               <button
+//                 onClick={() => handleDelete(post._id)}
+//                 className="bg-red-500 text-white px-3 py-1 text-sm rounded"
+//               >
+//                 Delete
+//               </button>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Pagination */}
+//       <div className="flex justify-center mt-6 gap-4">
+//         <button
+//           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+//           disabled={page === 1}
+//           className="px-3 py-1 border rounded"
+//         >
+//           Prev
+//         </button>
+//         <span className="text-sm">
+//           Page {page} of {totalPages}
+//         </span>
+//         <button
+//           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+//           disabled={page === totalPages}
+//           className="px-3 py-1 border rounded"
+//         >
+//           Next
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default AllPosts;
+
+
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../../utils";
-import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../utils";
+import toast from "react-hot-toast";
 
-const AllPosts = () => {
-  const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]); 
-  const [search, setSearch] = useState("");
+const Search = () => {
+  const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
-  const [sort, setSort] = useState("desc");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [categories, setCategories] = useState([]);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Fetch blog posts
-  const fetchPosts = async () => {
-    try {
-      const res = await axios.get(
-        `${BACKEND_URL}/api/superadmin/posts?search=${search}&category=${category}&sort=${sort}&page=${page}&limit=6`,
-        { withCredentials: true }
-      );
-      setPosts(res.data.posts);
-      setTotalPages(res.data.totalPages);
-    } catch (error) {
-      toast.error("Failed to fetch posts");
-      console.log(error);
-    }
-  };
-
-  //  Fetch blog categories dynamically
+  // Fetch categories from backend
   const fetchCategories = async () => {
     try {
       const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
@@ -324,40 +479,51 @@ const AllPosts = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  // Fetch blogs based on search & category
+  const fetchResults = async () => {
+    if (!query.trim() && !category) {
+      setResults([]);
+      return;
+    }
     try {
-      await axios.delete(`${BACKEND_URL}/api/superadmin/posts/${id}`, {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (query.trim()) params.append("q", query.trim());
+      if (category) params.append("category", category);
+
+      const res = await axios.get(`${BACKEND_URL}/api/blogs/search?${params.toString()}`, {
         withCredentials: true,
       });
-      toast.success("Post deleted");
-      fetchPosts();
+      setResults(res.data);
     } catch (error) {
-      toast.error("Failed to delete post", error);
+      console.error("Search error:", error);
+      toast.error("Search failed");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Fetch posts + categories on load and when filters change
+  // Load categories on mount
   useEffect(() => {
-    fetchPosts();
-  }, [search, category, sort, page]);
-
-  useEffect(() => {
-    fetchCategories(); //  load categories on mount
+    fetchCategories();
   }, []);
 
-  return (
-    <div className="p-8">
-      <h2 className="text-2xl font-bold mb-4">📝 All Blog Posts</h2>
+  // Auto-search when query or category changes
+  useEffect(() => {
+    fetchResults();
+  }, [query, category]);
 
-      {/* Filters */}
-      <div className="mb-4 flex flex-wrap gap-4 items-center">
-        <input
-          type="text"
-          placeholder="Search by title..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border px-3 py-1 rounded"
-        />
+  return (
+    <div style={{ padding: "2rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "0.5rem",
+          marginBottom: "2rem",
+        }}
+      >
+        {/* Category Filter */}
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -370,84 +536,86 @@ const AllPosts = () => {
             </option>
           ))}
         </select>
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="border px-2 py-1 rounded"
-        >
-          <option value="desc">Newest First</option>
-          <option value="asc">Oldest First</option>
-        </select>
+
+        {/* Search Input */}
+        <input
+          type="text"
+          placeholder="Search blog posts..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          style={{
+            padding: "0.75rem",
+            width: "320px",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            fontSize: "1rem",
+          }}
+        />
+
+        {loading && <span>Loading...</span>}
       </div>
 
-      {/* Posts List */}
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
-          <div key={post._id} className="border p-4 rounded shadow bg-white">
-            <img
-              src={post.blogImage.url}
-              alt={post.title}
-              className="w-full h-40 object-cover rounded mb-2"
-            />
-            <h3 className="text-lg font-semibold">{post.title}</h3>
-            <p className="text-sm text-gray-600">
-              {post.about.slice(0, 80)}...
-            </p>
-            <div className="flex items-center mt-2 space-x-2">
-              {post.createdBy?.photo?.url && (
+      {/* Blog results grid */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+          gap: "24px",
+        }}
+      >
+        {results.length > 0 ? (
+          results.map((post) => (
+            <Link
+              to={`/blog/${post._id}`}
+              key={post._id}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                }}
+              >
                 <img
-                  src={post.createdBy.photo.url}
-                  alt="author"
-                  className="w-7 h-7 rounded-full"
+                  src={post.blogImage?.url || "/default.jpg"}
+                  alt={post.title}
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
+                  }}
                 />
-              )}
-              <span className="text-sm">
-                {post.createdBy?.name || "Unknown"}
-              </span>
-            </div>
-            <p className="text-xs text-gray-400 mt-1">
-              {new Date(post.createdAt).toLocaleDateString()}
-            </p>
-            <div className="flex gap-2 mt-2">
-              <Link
-                to={`${BACKEND_URL}/superadmin/view-blog/${post._id}`}
-                className="bg-blue-500 text-white px-3 py-1 text-sm rounded"
-              >
-                View
-              </Link>
-              <button
-                onClick={() => handleDelete(post._id)}
-                className="bg-red-500 text-white px-3 py-1 text-sm rounded"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center mt-6 gap-4">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page === 1}
-          className="px-3 py-1 border rounded"
-        >
-          Prev
-        </button>
-        <span className="text-sm">
-          Page {page} of {totalPages}
-        </span>
-        <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={page === totalPages}
-          className="px-3 py-1 border rounded"
-        >
-          Next
-        </button>
+                <div style={{ padding: "1rem" }}>
+                  <p
+                    style={{
+                      color: "#0a66c2",
+                      fontWeight: "bold",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {post.category}
+                  </p>
+                  <h2
+                    style={{
+                      fontSize: "1.25rem",
+                      margin: "0.5rem 0",
+                    }}
+                  >
+                    {post.title}
+                  </h2>
+                  <p>{post.adminName}</p>
+                </div>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <p>No results found.</p>
+        )}
       </div>
     </div>
   );
 };
 
-export default AllPosts;
+export default Search;
