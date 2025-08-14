@@ -414,56 +414,54 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
+import toast from "react-hot-toast";
 
 const Search = () => {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
   const [results, setResults] = useState([]);
   const [searchActive, setSearchActive] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
 
-  // Fetch categories when component mounts
+  // Fetch categories from backend
+  const fetchCategories = async () => {
+    try {
+      const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
+        withCredentials: true,
+      });
+      setCategories(data);
+    } catch (error) {
+      console.error("Failed to fetch categories", error);
+      toast.error("Unable to load categories");
+    }
+  };
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get(`${BACKEND_URL}/api/categories`);
-        setCategories(res.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
     fetchCategories();
   }, []);
 
-  // Fetch blogs (search + category)
-  const fetchBlogs = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!query.trim() && !category) return; // prevent empty search
+
     try {
       setLoading(true);
-      let url = `${BACKEND_URL}/api/blogs/search?`;
-      if (query) url += `q=${query}&`;
-      if (category) url += `category=${category}&`;
 
-      const res = await axios.get(url);
+      // Build query params dynamically
+      const params = new URLSearchParams();
+      if (query.trim()) params.append("q", query.trim());
+      if (category) params.append("category", category);
+
+      const res = await axios.get(`${BACKEND_URL}/api/blogs/search?${params.toString()}`);
       setResults(res.data);
       setSearchActive(true);
     } catch (error) {
       console.error("Search error:", error);
+      toast.error("Search failed");
     } finally {
       setLoading(false);
     }
-  };
-
-  // Trigger search instantly when category changes
-  useEffect(() => {
-    if (category) {
-      fetchBlogs();
-    }
-  }, [category]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetchBlogs();
   };
 
   const handleClear = () => {
@@ -480,7 +478,6 @@ const Search = () => {
         style={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
           gap: "0.5rem",
           marginBottom: "2rem",
         }}
@@ -494,7 +491,6 @@ const Search = () => {
             border: "1px solid #ccc",
             borderRadius: "8px",
             fontSize: "1rem",
-            backgroundColor: "#fff",
           }}
         >
           <option value="">All Categories</option>
@@ -520,7 +516,6 @@ const Search = () => {
           }}
         />
 
-        {/* Search Button */}
         <button
           type="submit"
           style={{
@@ -556,14 +551,13 @@ const Search = () => {
         )}
       </form>
 
-      {/* Search Results */}
+      {/* Blog results grid */}
       {searchActive && (
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
             gap: "24px",
-            padding: "1rem",
           }}
         >
           {results.length > 0 ? (
@@ -573,14 +567,12 @@ const Search = () => {
                 key={post._id}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                {/* Blog Card */}
                 <div
                   style={{
                     backgroundColor: "#fff",
                     borderRadius: "12px",
                     overflow: "hidden",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
                   }}
                 >
                   <img
@@ -590,42 +582,33 @@ const Search = () => {
                       width: "100%",
                       height: "200px",
                       objectFit: "cover",
-                      borderBottom: "1px solid #eee",
                     }}
                   />
                   <div style={{ padding: "1rem" }}>
-                    <p style={{ color: "#0a66c2", fontWeight: "bold" }}>
+                    <p
+                      style={{
+                        color: "#0a66c2",
+                        fontWeight: "bold",
+                        fontSize: "0.85rem",
+                      }}
+                    >
                       {post.category}
                     </p>
                     <h2
                       style={{
                         fontSize: "1.25rem",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
+                        margin: "0.5rem 0",
                       }}
                     >
                       {post.title}
                     </h2>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <img
-                        src={post.adminPhoto || "/default-user.jpg"}
-                        alt="User"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          marginRight: "10px",
-                        }}
-                      />
-                      <p style={{ fontWeight: "500" }}>{post.adminName}</p>
-                    </div>
+                    <p>{post.adminName}</p>
                   </div>
                 </div>
               </Link>
             ))
           ) : (
-            <p style={{ textAlign: "center" }}>No results found.</p>
+            <p>No results found.</p>
           )}
         </div>
       )}
