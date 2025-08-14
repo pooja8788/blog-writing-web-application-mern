@@ -436,15 +436,13 @@ const Search = () => {
     fetchCategories();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Fetch blogs (search + category)
+  const fetchBlogs = async () => {
     try {
       setLoading(true);
-
-      let url = `${BACKEND_URL}/api/blogs/search?q=${query}`;
-      if (category) {
-        url += `&category=${category}`;
-      }
+      let url = `${BACKEND_URL}/api/blogs/search?`;
+      if (query) url += `q=${query}&`;
+      if (category) url += `category=${category}&`;
 
       const res = await axios.get(url);
       setResults(res.data);
@@ -454,6 +452,18 @@ const Search = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Trigger search instantly when category changes
+  useEffect(() => {
+    if (category) {
+      fetchBlogs();
+    }
+  }, [category]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchBlogs();
   };
 
   const handleClear = () => {
