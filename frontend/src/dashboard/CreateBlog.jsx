@@ -155,7 +155,7 @@ function CreateBlog() {
         const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
           withCredentials: true,
         });
-        setCategories(data); // ✅ update state
+        setCategories(data); 
       } catch (error) {
         console.error("Failed to fetch categories", error);
         toast.error("Unable to load categories");

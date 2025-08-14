@@ -406,11 +406,11 @@ const AllPosts = () => {
               </span>
             </div>
             <p className="text-xs text-gray-400 mt-1">
-              {new Date(post.createdAt).toLocaleDateString()} | 👁 {post.views}
+              {new Date(post.createdAt).toLocaleDateString()} 
             </p>
             <div className="flex gap-2 mt-2">
               <a
-                href={`/superadmin/view-blog/${post._id}`}
+                href={`${BACKEND_URL}/api/superadmin//single-blog/${post._id}`}
                 className="bg-blue-500 text-white px-3 py-1 text-sm rounded"
               >
                 View
