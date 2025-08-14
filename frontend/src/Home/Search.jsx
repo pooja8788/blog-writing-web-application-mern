@@ -410,7 +410,7 @@
 // export default Search;
 
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
@@ -419,27 +419,11 @@ import toast from "react-hot-toast";
 const Search = () => {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState([]);
   const [results, setResults] = useState([]);
   const [searchActive, setSearchActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Fetch categories from backend
-  const fetchCategories = async () => {
-    try {
-      const { data } = await axios.get(`${BACKEND_URL}/api/categories`, {
-        withCredentials: true,
-      });
-      setCategories(data);
-    } catch (error) {
-      console.error("Failed to fetch categories", error);
-      toast.error("Unable to load categories");
-    }
-  };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -482,19 +466,7 @@ const Search = () => {
           marginBottom: "2rem",
         }}
       >
-        {/* Category Filter */}
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border px-2 py-1 rounded"
-        >
-          <option value="">All Categories</option>
-          {categories.map((cat) => (
-            <option key={cat._id} value={cat.name}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
+        
 
         {/* Search Input */}
         <input

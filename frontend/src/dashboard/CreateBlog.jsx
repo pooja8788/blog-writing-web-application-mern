@@ -521,12 +521,9 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { BACKEND_URL } from "../utils";
 
-const fontSizeArr = ["8px","10px","12px","14px","18px","24px","32px","48px","60px"];
-const fontArr = ["Arial","Calibri","Times New Roman","Courier New","Verdana","Georgia"];
+
 
 const toolbarOptions = [
-  [{ font: fontArr }],
-  [{ size: fontSizeArr }],
   ["bold", "italic", "underline"],
   [{ color: [] }, { background: [] }],
   [{ align: [] }],
